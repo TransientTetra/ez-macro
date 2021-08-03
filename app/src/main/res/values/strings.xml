@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EzMacro</string>
+    <string name="caloriesProgressText">Calories:</string>
 </resources>
