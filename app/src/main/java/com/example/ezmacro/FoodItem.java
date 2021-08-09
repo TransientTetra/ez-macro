@@ -27,6 +27,21 @@ public class FoodItem
 	@Nullable
 	private String barcode;
 
+	/**
+	 * How many servings the item contains
+	 */
+	private int servings;
+
+	/**
+	 * How much the item weighs overall
+	 */
+	private int weight;
+
+	/**
+	 * Is the item favorited or not
+	 */
+	private boolean isFavorite;
+
 	public String getName()
 	{
 		return name;
@@ -56,5 +71,35 @@ public class FoodItem
 	public void setBarcode(@Nullable String barcode)
 	{
 		this.barcode = barcode;
+	}
+
+	public int getServings()
+	{
+		return servings;
+	}
+
+	public void setServings(int servings)
+	{
+		this.servings = servings;
+	}
+
+	public int getWeight()
+	{
+		return weight;
+	}
+
+	public void setWeight(int weight)
+	{
+		this.weight = weight;
+	}
+
+	public boolean isFavorite()
+	{
+		return isFavorite;
+	}
+
+	public void setFavorite(boolean favorite)
+	{
+		isFavorite = favorite;
 	}
 }
