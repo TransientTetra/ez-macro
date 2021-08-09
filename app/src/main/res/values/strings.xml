@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">EzMacro</string>
     <string name="caloriesProgressText">Calories:</string>
+    <string name="proteinProgressText">Protein:</string>
+    <string name="fatProgressText">Fat:</string>
+    <string name="carbProgressText">Carb:</string>
+    <string name="itemListTitle">Today:</string>
 </resources>
