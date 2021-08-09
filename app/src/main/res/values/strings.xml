@@ -4,5 +4,6 @@
     <string name="proteinProgressText">Protein:</string>
     <string name="fatProgressText">Fat:</string>
     <string name="carbProgressText">Carb:</string>
-    <string name="itemListTitle">Today:</string>
+    <string name="itemListTitle">Food Items:</string>
+    <string name="foodItemRemove">Remove</string>
 </resources>

@@ -1,10 +1,16 @@
 package com.example.ezmacro;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -39,6 +45,25 @@ public class MainActivity extends AppCompatActivity
 		setProteinProgress(50);
 		setFatProgress(80);
 		setCarbProgress(120);
+
+		RecyclerView foodItemsView = findViewById(R.id.foodItemsView);
+		// todo remove example
+		List<FoodItem> exList = new ArrayList<FoodItem>();
+		FoodItem ex1 = new FoodItem();
+		ex1.setName("Pizza");
+		FoodItem ex2 = new FoodItem();
+		ex2.setName("Kartofel");
+		exList.add(ex1);
+		exList.add(ex2);
+		exList.add(ex2);
+		exList.add(ex2);
+		exList.add(ex2);
+		exList.add(ex2);
+		// end todo
+		FoodItemAdapter foodItemAdapter = new FoodItemAdapter(exList);
+		foodItemsView.setAdapter(foodItemAdapter);
+		foodItemsView.setLayoutManager(new LinearLayoutManager(this));
+		foodItemsView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 	}
 
 	private void setSingleProgress(int percent, ProgressBar progressBar, TextView textView)
