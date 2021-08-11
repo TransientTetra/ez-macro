@@ -39,7 +39,6 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
 	{
 		FoodItem foodItem = foodItemList.get(position);
 		TextView foodName = holder.foodName;
-		Button removeButton = holder.removeButton;
 		foodName.setText(foodItem.getName());
 	}
 
@@ -51,12 +50,10 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
 
 	public class ViewHolder extends RecyclerView.ViewHolder
 	{
-		public Button removeButton;
 		public TextView foodName;
 		public ViewHolder(@NonNull View itemView)
 		{
 			super(itemView);
-			removeButton = itemView.findViewById(R.id.removeButton);
 			foodName = itemView.findViewById(R.id.foodName);
 		}
 	}
