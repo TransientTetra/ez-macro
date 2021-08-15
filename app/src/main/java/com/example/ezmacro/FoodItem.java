@@ -1,6 +1,9 @@
 package com.example.ezmacro;
 
 import androidx.annotation.Nullable;
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 /**
  * The class representing a single food item, with a given name
@@ -9,22 +12,36 @@ import androidx.annotation.Nullable;
  * @version 1.0
  * @since 2021-08-03
  */
+
+@Entity
 public class FoodItem
 {
+	/**
+	 * Unique ID
+	 */
+	@PrimaryKey(autoGenerate = true)
+	private int id;
+
 	/**
 	 * The name of the food item
 	 */
 	private String name;
 
 	/**
+	 * Description of the food item
+	 */
+	private String description;
+
+	/**
 	 * The {@link Nutrition} value of the food item
 	 */
+	@Embedded
 	private Nutrition nutrition;
 
 	/**
 	 * An optional barcode of the item
 	 */
-	@Nullable
+	
 	private String barcode;
 
 	/**
@@ -41,6 +58,21 @@ public class FoodItem
 	 * Is the item favorited or not
 	 */
 	private boolean isFavorite;
+
+	public FoodItem()
+	{
+	}
+
+	public FoodItem(String name, String description, Nutrition nutrition, String barcode, int servings, int weight, boolean isFavorite)
+	{
+		this.name = name;
+		this.description = description;
+		this.nutrition = nutrition;
+		this.barcode = barcode;
+		this.servings = servings;
+		this.weight = weight;
+		this.isFavorite = isFavorite;
+	}
 
 	public String getName()
 	{
@@ -62,13 +94,12 @@ public class FoodItem
 		this.nutrition = nutrition;
 	}
 
-	@Nullable
 	public String getBarcode()
 	{
 		return barcode;
 	}
 
-	public void setBarcode(@Nullable String barcode)
+	public void setBarcode( String barcode)
 	{
 		this.barcode = barcode;
 	}
@@ -101,5 +132,25 @@ public class FoodItem
 	public void setFavorite(boolean favorite)
 	{
 		isFavorite = favorite;
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
+	public int getId()
+	{
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
 	}
 }

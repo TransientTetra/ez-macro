@@ -1,6 +1,8 @@
 package com.example.ezmacro;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity
 
 	private ProgressBar carbProgressBar;
 	private TextView carbPercent;
+
+	private FoodItemViewModel foodItemViewModel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -47,23 +52,20 @@ public class MainActivity extends AppCompatActivity
 		setCarbProgress(120);
 
 		RecyclerView foodItemsView = findViewById(R.id.foodItemsView);
-		// todo remove example
-		List<FoodItem> exList = new ArrayList<FoodItem>();
-		FoodItem ex1 = new FoodItem();
-		ex1.setName("Pizza");
-		FoodItem ex2 = new FoodItem();
-		ex2.setName("Kartofel");
-		exList.add(ex1);
-		exList.add(ex2);
-		exList.add(ex2);
-		exList.add(ex2);
-		exList.add(ex2);
-		exList.add(ex2);
-		// end todo
-		FoodItemAdapter foodItemAdapter = new FoodItemAdapter(exList);
+		FoodItemAdapter foodItemAdapter = new FoodItemAdapter();
 		foodItemsView.setAdapter(foodItemAdapter);
 		foodItemsView.setLayoutManager(new LinearLayoutManager(this));
 		foodItemsView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+		foodItemViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(FoodItemViewModel.class);
+		foodItemViewModel.getAll().observe(this, new Observer<List<FoodItem>>()
+		{
+			@Override
+			public void onChanged(List<FoodItem> foodItems)
+			{
+				foodItemAdapter.setFoodItemList(foodItems);
+			}
+		});
 	}
 
 	private void setSingleProgress(int percent, ProgressBar progressBar, TextView textView)

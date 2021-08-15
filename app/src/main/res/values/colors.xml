@@ -11,7 +11,4 @@
     <color name="proteinProgressBar">#bfb326</color>
     <color name="fatProgressBar">#8a28ad</color>
     <color name="carbProgressBar">#40c26d</color>
-    <color name="foodItemViewBG">#ABABAB</color>
-    <color name="foodItemViewFG">#D0D0D0</color>
-    <color name="foodItemMacroText">#898989</color>
 </resources>

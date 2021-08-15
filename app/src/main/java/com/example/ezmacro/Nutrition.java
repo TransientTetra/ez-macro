@@ -1,5 +1,8 @@
 package com.example.ezmacro;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 /**
  * Class representing nutrition of a product
  *
@@ -28,6 +31,22 @@ public class Nutrition
 	 * Amount of all carbohydrates in grams in 100g of the product
 	 */
 	private float carbohydrates; // overall carbohydrates in grams
+
+	public Nutrition()
+	{
+		this.energy = 0;
+		this.protein = 0;
+		this.fats = 0;
+		this.carbohydrates = 0;
+	}
+
+	public Nutrition(float energy, float protein, float fats, float carbohydrates)
+	{
+		this.energy = energy;
+		this.protein = protein;
+		this.fats = fats;
+		this.carbohydrates = carbohydrates;
+	}
 
 	public float getEnergy()
 	{
