@@ -3,6 +3,7 @@ package com.example.ezmacro;
 import androidx.annotation.Nullable;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
@@ -47,23 +48,31 @@ public class FoodItem
 	/**
 	 * How many servings the item contains
 	 */
-	private int servings;
+	private float servings;
 
 	/**
 	 * How much the item weighs overall
 	 */
-	private int weight;
+	private float weight;
 
 	/**
 	 * Is the item favorited or not
 	 */
 	private boolean isFavorite;
 
+	@Ignore
 	public FoodItem()
 	{
+		this.name = "";
+		this.description = "";
+		this.nutrition = new Nutrition();
+		this.barcode = "";
+		this.servings = 0;
+		this.weight = 0;
+		this.isFavorite = false;
 	}
 
-	public FoodItem(String name, String description, Nutrition nutrition, String barcode, int servings, int weight, boolean isFavorite)
+	public FoodItem(String name, String description, Nutrition nutrition, String barcode, float servings, float weight, boolean isFavorite)
 	{
 		this.name = name;
 		this.description = description;
@@ -104,22 +113,22 @@ public class FoodItem
 		this.barcode = barcode;
 	}
 
-	public int getServings()
+	public float getServings()
 	{
 		return servings;
 	}
 
-	public void setServings(int servings)
+	public void setServings(float servings)
 	{
 		this.servings = servings;
 	}
 
-	public int getWeight()
+	public float getWeight()
 	{
 		return weight;
 	}
 
-	public void setWeight(int weight)
+	public void setWeight(float weight)
 	{
 		this.weight = weight;
 	}

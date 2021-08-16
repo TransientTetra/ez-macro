@@ -9,7 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {FoodItem.class}, version = 1)
+@Database(entities = {FoodItem.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase
 {
 	private static AppDatabase instance;
@@ -22,39 +22,39 @@ public abstract class AppDatabase extends RoomDatabase
 		{
 			instance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "FoodDatabase")
 				.fallbackToDestructiveMigration()
-				.addCallback(roomCallback)
+//				.addCallback(roomCallback)
 				.build();
 		}
 		return instance;
 	}
 
-	private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback()
-	{
-		@Override
-		public void onCreate(@NonNull SupportSQLiteDatabase db)
-		{
-			super.onCreate(db);
-			new PopulateDbAsyncTask(instance).execute();
-		}
-	};
-
-	// todo example, remove
-	private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void>
-	{
-		private FoodItemDao foodItemDao;
-
-		public PopulateDbAsyncTask(AppDatabase db)
-		{
-			this.foodItemDao = db.FoodItemDao();
-		}
-
-		@Override
-		protected Void doInBackground(Void... voids)
-		{
-			foodItemDao.insert(new FoodItem("Pizza", "", new Nutrition(), "", 0, 0, false));
-			foodItemDao.insert(new FoodItem("Pizza", "", new Nutrition(), "", 0, 0, false));
-			foodItemDao.insert(new FoodItem("Pizza", "", new Nutrition(), "", 0, 0, false));
-			return null;
-		}
-	}
+//	private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback()
+//	{
+//		@Override
+//		public void onCreate(@NonNull SupportSQLiteDatabase db)
+//		{
+//			super.onCreate(db);
+//			new PopulateDbAsyncTask(instance).execute();
+//		}
+//	};
+//
+//	// todo example, remove
+//	private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void>
+//	{
+//		private FoodItemDao foodItemDao;
+//
+//		public PopulateDbAsyncTask(AppDatabase db)
+//		{
+//			this.foodItemDao = db.FoodItemDao();
+//		}
+//
+//		@Override
+//		protected Void doInBackground(Void... voids)
+//		{
+//			foodItemDao.insert(new FoodItem("Pizza", "", new Nutrition(), "", 0, 0, false));
+//			foodItemDao.insert(new FoodItem("Pizza", "", new Nutrition(), "", 0, 0, false));
+//			foodItemDao.insert(new FoodItem("Pizza", "", new Nutrition(), "", 0, 0, false));
+//			return null;
+//		}
+//	}
 }

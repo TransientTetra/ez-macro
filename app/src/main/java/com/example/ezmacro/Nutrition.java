@@ -1,6 +1,7 @@
 package com.example.ezmacro;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
@@ -32,6 +33,7 @@ public class Nutrition
 	 */
 	private float carbohydrates; // overall carbohydrates in grams
 
+	@Ignore
 	public Nutrition()
 	{
 		this.energy = 0;

@@ -5,5 +5,26 @@
     <string name="fatProgressText">Fat:</string>
     <string name="carbProgressText">Carb:</string>
     <string name="itemListTitle">Food Items:</string>
-    <string name="foodItemRemove">Remove</string>
+    <string name="foodItemCreationNameHint">Food name</string>
+    <string name="foodItemCreationNameText">Food item\'s name:</string>
+    <string name="addNewFoodItemDescriptionHint">Description</string>
+    <string name="addNewFoodItemDescriptionText">Description:</string>
+    <string name="favoriteText">Favorite</string>
+    <string name="weightText">Weight [g]</string>
+    <string name="weightHint">Weight</string>
+    <string name="servingsHint">Servings</string>
+    <string name="servingsText">Servings</string>
+    <string name="nutritionText">Nutrition per 100g:</string>
+    <string name="energyText">Energy [kcal]:</string>
+    <string name="energyHint">Energy</string>
+    <string name="proteinHint">Protein</string>
+    <string name="proteinText">Protein [g]:</string>
+    <string name="fatHint">Fat</string>
+    <string name="fatText">Fat [g]:</string>
+    <string name="carbHint">Carbs</string>
+    <string name="carbText">Carbs [g]:</string>
+    <string name="saveButton">Save</string>
+    <string name="addNewFoodItemTitle">Add new food item</string>
+    <string name="barcodeHint">Barcode</string>
+    <string name="barcodeText">Barcode</string>
 </resources>

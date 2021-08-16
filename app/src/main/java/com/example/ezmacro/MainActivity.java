@@ -7,10 +7,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +54,17 @@ public class MainActivity extends AppCompatActivity
 		setProteinProgress(50);
 		setFatProgress(80);
 		setCarbProgress(120);
+
+		FloatingActionButton addFoodItemButton = findViewById(R.id.addFoodItemButton);
+		addFoodItemButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(MainActivity.this, AddNewFoodItem.class);
+				startActivity(intent);
+			}
+		});
 
 		RecyclerView foodItemsView = findViewById(R.id.foodItemsView);
 		FoodItemAdapter foodItemAdapter = new FoodItemAdapter();
