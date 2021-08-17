@@ -13,14 +13,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.ezmacro.util.EnergyConverter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
-	private ProgressBar caloriesProgressBar;
-	private TextView caloriesPercent;
+	private ProgressBar energyProgressBar;
+	private TextView energyPercent;
 	
 	private ProgressBar proteinProgressBar;
 	private TextView proteinPercent;
@@ -39,8 +40,8 @@ public class MainActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		caloriesProgressBar = findViewById(R.id.caloriesProgressBar);
-		caloriesPercent = findViewById(R.id.caloriesProgressPercent);
+		energyProgressBar = findViewById(R.id.energyProgressBar);
+		energyPercent = findViewById(R.id.energyProgressPercent);
 		proteinProgressBar = findViewById(R.id.proteinProgressBar);
 		proteinPercent = findViewById(R.id.proteinProgressPercent);
 		fatProgressBar = findViewById(R.id.fatProgressBar);
@@ -48,10 +49,8 @@ public class MainActivity extends AppCompatActivity
 		carbProgressBar = findViewById(R.id.carbProgressBar);
 		carbPercent = findViewById(R.id.carbProgressPercent);
 
-		setCalorieProgress(39);
-		setProteinProgress(50);
-		setFatProgress(80);
-		setCarbProgress(120);
+		// todo temporary
+		Nutrition goal = new Nutrition(EnergyConverter.kcalToJoule(3000), 200, 90, 250);
 
 		FloatingActionButton addFoodItemButton = findViewById(R.id.addFoodItemButton);
 		addFoodItemButton.setOnClickListener(new View.OnClickListener()
@@ -76,9 +75,23 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onChanged(List<FoodItem> foodItems)
 			{
+				Nutrition progress = new Nutrition();
+				for (FoodItem foodItem : foodItems)
+				{
+					progress.add(foodItem.getNutrition());
+				}
+				setProgress(goal, progress);
 				foodItemAdapter.setFoodItemList(foodItems);
 			}
 		});
+	}
+
+	private void setProgress(Nutrition target, Nutrition current)
+	{
+		setEnergyProgress(Math.round(current.getEnergy() / target.getEnergy() * 100));
+		setProteinProgress(Math.round(current.getProtein() / target.getProtein() * 100));
+		setFatProgress(Math.round(current.getFats() / target.getFats() * 100));
+		setCarbProgress(Math.round(current.getCarbohydrates() / target.getCarbohydrates() * 100));
 	}
 
 	private void setSingleProgress(int percent, ProgressBar progressBar, TextView textView)
@@ -86,12 +99,12 @@ public class MainActivity extends AppCompatActivity
 		// todo what when over 100%?
 		percent = Math.max(percent, 0);
 		progressBar.setProgress(percent);
-		textView.setText(progressBar.getProgress() + "%");
+		textView.setText(percent + "%");
 	}
 
-	public void setCalorieProgress(int percent)
+	public void setEnergyProgress(int percent)
 	{
-		setSingleProgress(percent, caloriesProgressBar, caloriesPercent);
+		setSingleProgress(percent, energyProgressBar, energyPercent);
 	}
 
 	public void setProteinProgress(int percent)

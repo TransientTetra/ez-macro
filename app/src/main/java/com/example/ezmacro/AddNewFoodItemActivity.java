@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import com.example.ezmacro.util.EnergyConverter;
+
 public class AddNewFoodItemActivity extends AppCompatActivity
 {
 	private EditText nameTextInput;
@@ -78,7 +80,8 @@ public class AddNewFoodItemActivity extends AppCompatActivity
 		float weight = getValue(weightTextInput);
 		float servings = getValue(servingsTextInput);
 		String barcode = barcodeTextInput.getText().toString();
-		float energy = getValue(energyTextInput);
+		// todo temporary fixed input in kcal
+		float energy = EnergyConverter.kcalToJoule(getValue(energyTextInput));
 		float protein = getValue(proteinTextInput);
 		float fat = getValue(fatTextInput);
 		float carb = getValue(carbTextInput);
