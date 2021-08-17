@@ -27,4 +27,5 @@
     <string name="addNewFoodItemTitle">Add new food item</string>
     <string name="barcodeHint">Barcode</string>
     <string name="barcodeText">Barcode</string>
+    <string name="add_food_item">Add food item</string>
 </resources>
