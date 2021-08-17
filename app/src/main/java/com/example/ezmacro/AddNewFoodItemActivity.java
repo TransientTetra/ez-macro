@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 
-public class AddNewFoodItem extends AppCompatActivity
+public class AddNewFoodItemActivity extends AppCompatActivity
 {
 	private EditText nameTextInput;
 	private EditText descriptionTextInput;
@@ -21,7 +21,8 @@ public class AddNewFoodItem extends AppCompatActivity
 	private EditText proteinTextInput;
 	private EditText fatTextInput;
 	private EditText carbTextInput;
-	private Button saveButton;
+
+	private AddNewFoodItemViewModel viewModel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -39,7 +40,7 @@ public class AddNewFoodItem extends AppCompatActivity
 		fatTextInput = findViewById(R.id.fatTextInput);
 		carbTextInput = findViewById(R.id.carbTextInput);
 
-		saveButton = findViewById(R.id.saveButton);
+		Button saveButton = findViewById(R.id.saveButton);
 		saveButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -51,24 +52,40 @@ public class AddNewFoodItem extends AppCompatActivity
 
 		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 		setTitle(R.string.addNewFoodItemTitle);
+
+		viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(AddNewFoodItemViewModel.class);
+	}
+
+	private float getValue(EditText editText)
+	{
+		float ret;
+		try
+		{
+			ret = Float.parseFloat(editText.getText().toString());
+		} catch (Exception e)
+		{
+			ret = 0;
+		}
+		return ret;
 	}
 
 	private void saveFoodItem()
 	{
+		boolean isFavorite = favoriteSwitch.isChecked();
+
 		String name = nameTextInput.getText().toString();
 		String description = descriptionTextInput.getText().toString();
-		boolean isFavorite = favoriteSwitch.isChecked();
-		float weight = Float.parseFloat(weightTextInput.getText().toString());
-		float servings = Float.parseFloat(servingsTextInput.getText().toString());
+		float weight = getValue(weightTextInput);
+		float servings = getValue(servingsTextInput);
 		String barcode = barcodeTextInput.getText().toString();
-		float energy = Float.parseFloat(energyTextInput.getText().toString());
-		float protein = Float.parseFloat(proteinTextInput.getText().toString());
-		float fat = Float.parseFloat(fatTextInput.getText().toString());
-		float carb = Float.parseFloat(carbTextInput.getText().toString());
+		float energy = getValue(energyTextInput);
+		float protein = getValue(proteinTextInput);
+		float fat = getValue(fatTextInput);
+		float carb = getValue(carbTextInput);
 
 		Nutrition nutrition = new Nutrition(energy, protein, fat, carb);
 		FoodItem foodItem = new FoodItem(name, description, nutrition, barcode, servings, weight, isFavorite);
-//		foodItemViewModel.insert(foodItem);
+		viewModel.insert(foodItem);
 		finish();
 	}
 }

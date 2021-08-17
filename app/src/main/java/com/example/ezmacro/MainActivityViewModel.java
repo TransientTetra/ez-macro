@@ -8,11 +8,11 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-public class FoodItemViewModel extends AndroidViewModel
+public class MainActivityViewModel extends AndroidViewModel
 {
 	private FoodItemRepository repository;
 	private LiveData<List<FoodItem>> allFoodItems;
-	public FoodItemViewModel(@NonNull Application application)
+	public MainActivityViewModel(@NonNull Application application)
 	{
 		super(application);
 		repository = new FoodItemRepository(application);
