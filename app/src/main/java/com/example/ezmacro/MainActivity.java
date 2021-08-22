@@ -1,9 +1,11 @@
 package com.example.ezmacro;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ezmacro.util.EnergyConverter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,7 +25,7 @@ public class MainActivity extends AppCompatActivity
 {
 	private ProgressBar energyProgressBar;
 	private TextView energyPercent;
-	
+
 	private ProgressBar proteinProgressBar;
 	private TextView proteinPercent;
 
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(MainActivity.this, AddNewFoodItemActivity.class);
+				Intent intent = new Intent(MainActivity.this, AddEditFoodItemActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -82,6 +85,35 @@ public class MainActivity extends AppCompatActivity
 				}
 				setProgress(goal, progress);
 				foodItemAdapter.setFoodItemList(foodItems);
+			}
+		});
+
+		new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
+		{
+			@Override
+			public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target)
+			{
+				return false;
+			}
+
+			@Override
+			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
+			{
+				FoodItem toDelete = foodItemAdapter.getFoodItemAt(viewHolder.getAdapterPosition());
+				String foodName = toDelete.getName();
+				mainActivityViewModel.delete(toDelete);
+				Toast.makeText(getApplicationContext(), getString(R.string.deleteFoodItemMainActivity) + foodName, Toast.LENGTH_SHORT).show();
+			}
+		}).attachToRecyclerView(foodItemsView);
+
+		foodItemAdapter.setOnItemClickListener(new FoodItemAdapter.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(FoodItem foodItem)
+			{
+				Intent intent = new Intent(MainActivity.this, AddEditFoodItemActivity.class);
+				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getId());
+				startActivity(intent);
 			}
 		});
 	}

@@ -16,6 +16,7 @@ import java.util.List;
 public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHolder>
 {
 	private List<FoodItem> foodItemList = new ArrayList<>();
+	private OnItemClickListener listener;
 
 	@NonNull
 	@Override
@@ -50,13 +51,40 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
 		notifyDataSetChanged();
 	}
 
+	public FoodItem getFoodItemAt(int position)
+	{
+		return foodItemList.get(position);
+	}
+
 	public class ViewHolder extends RecyclerView.ViewHolder
 	{
 		public TextView foodName;
+
 		public ViewHolder(@NonNull View itemView)
 		{
 			super(itemView);
 			foodName = itemView.findViewById(R.id.foodName);
+
+			itemView.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					int position = getAdapterPosition();
+					if (listener != null && position != RecyclerView.NO_POSITION)
+						listener.onItemClick(foodItemList.get(position));
+				}
+			});
 		}
+	}
+
+	public interface OnItemClickListener
+	{
+		void onItemClick(FoodItem foodItem);
+	}
+
+	public void setOnItemClickListener(OnItemClickListener listener)
+	{
+		this.listener = listener;
 	}
 }
