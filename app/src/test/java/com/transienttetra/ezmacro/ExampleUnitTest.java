@@ -1,4 +1,4 @@
-package com.example.ezmacro;
+package com.transienttetra.ezmacro;
 
 import org.junit.Test;
 

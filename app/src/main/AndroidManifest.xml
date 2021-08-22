@@ -10,11 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EzMacro" >
         <activity
-            android:name=".AddEditFoodItemActivity"
+            android:name="com.transienttetra.ezmacro.AddEditFoodItemActivity"
             android:exported="true"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName="com.transienttetra.ezmacro.MainActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.transienttetra.ezmacro.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

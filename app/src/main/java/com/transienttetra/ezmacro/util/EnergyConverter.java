@@ -1,4 +1,4 @@
-package com.example.ezmacro.util;
+package com.transienttetra.ezmacro.util;
 
 /**
  * Utility class for energy unit conversion methods

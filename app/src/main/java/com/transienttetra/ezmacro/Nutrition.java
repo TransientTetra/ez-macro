@@ -1,8 +1,6 @@
-package com.example.ezmacro;
+package com.transienttetra.ezmacro;
 
-import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 /**
  * Class representing nutrition of a product

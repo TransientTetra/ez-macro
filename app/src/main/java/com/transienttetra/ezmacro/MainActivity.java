@@ -1,4 +1,4 @@
-package com.example.ezmacro;
+package com.transienttetra.ezmacro;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ezmacro.util.EnergyConverter;
+import com.example.ezmacro.R;
+import com.transienttetra.ezmacro.util.EnergyConverter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
