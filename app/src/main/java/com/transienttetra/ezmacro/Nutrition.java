@@ -1,5 +1,6 @@
 package com.transienttetra.ezmacro;
 
+import androidx.annotation.Nullable;
 import androidx.room.Ignore;
 
 /**
@@ -86,6 +87,11 @@ public class Nutrition
 	public void setCarbohydrates(float carbohydrates)
 	{
 		this.carbohydrates = carbohydrates;
+	}
+
+	public boolean equals(Nutrition obj)
+	{
+		return energy == obj.getEnergy() && protein == obj.getProtein() && fats == obj.getFats() && carbohydrates == obj.getCarbohydrates();
 	}
 
 	/**

@@ -3,11 +3,17 @@ package com.transienttetra.ezmacro;
 import androidx.room.DatabaseConfiguration;
 import androidx.room.InvalidationTracker;
 import androidx.room.RoomOpenHelper;
+import androidx.room.RoomOpenHelper.Delegate;
+import androidx.room.RoomOpenHelper.ValidationResult;
 import androidx.room.util.DBUtil;
 import androidx.room.util.TableInfo;
+import androidx.room.util.TableInfo.Column;
+import androidx.room.util.TableInfo.ForeignKey;
+import androidx.room.util.TableInfo.Index;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
-
+import androidx.sqlite.db.SupportSQLiteOpenHelper.Callback;
+import androidx.sqlite.db.SupportSQLiteOpenHelper.Configuration;
 import java.lang.Class;
 import java.lang.Override;
 import java.lang.String;
@@ -90,7 +96,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         final TableInfo _infoFoodItem = new TableInfo("FoodItem", _columnsFoodItem, _foreignKeysFoodItem, _indicesFoodItem);
         final TableInfo _existingFoodItem = TableInfo.read(_db, "FoodItem");
         if (! _infoFoodItem.equals(_existingFoodItem)) {
-          return new RoomOpenHelper.ValidationResult(false, "FoodItem(FoodItem).\n"
+          return new RoomOpenHelper.ValidationResult(false, "FoodItem(com.transienttetra.ezmacro.FoodItem).\n"
                   + " Expected:\n" + _infoFoodItem + "\n"
                   + " Found:\n" + _existingFoodItem);
         }

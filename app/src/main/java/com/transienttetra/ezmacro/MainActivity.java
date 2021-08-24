@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
 					progress.add(foodItem.getNutrition());
 				}
 				setProgress(goal, progress);
-				foodItemAdapter.setFoodItemList(foodItems);
+				foodItemAdapter.submitList(foodItems);
 			}
 		});
 

@@ -82,6 +82,19 @@ public class FoodItem
 		this.isFavorite = isFavorite;
 	}
 
+	public boolean equals(FoodItem other)
+	{
+		boolean ret = true;
+		ret &= this.getBarcode().equals(other.getBarcode());
+		ret &= this.isFavorite() == other.isFavorite();
+		ret &= this.getName().equals(other.getName());
+		ret &= this.getDescription().equals(other.getDescription());
+		ret &= this.getNutrition().equals(other.getNutrition());
+		ret &= this.getServings() == other.getServings();
+		ret &= this.getWeight() == other.getWeight();
+		return ret;
+	}
+
 	public String getName()
 	{
 		return name;

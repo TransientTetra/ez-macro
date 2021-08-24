@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ezmacro.R;
@@ -14,10 +16,28 @@ import com.example.ezmacro.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHolder>
+public class FoodItemAdapter extends ListAdapter<FoodItem, FoodItemAdapter.ViewHolder>
 {
-	private List<FoodItem> foodItemList = new ArrayList<>();
 	private OnItemClickListener listener;
+	private static final DiffUtil.ItemCallback<FoodItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<FoodItem>()
+	{
+		@Override
+		public boolean areItemsTheSame(@NonNull FoodItem oldItem, @NonNull FoodItem newItem)
+		{
+			return oldItem.getId() == newItem.getId();
+		}
+
+		@Override
+		public boolean areContentsTheSame(@NonNull FoodItem oldItem, @NonNull FoodItem newItem)
+		{
+			return oldItem.equals(newItem);
+		}
+	};
+
+	public FoodItemAdapter()
+	{
+		super(DIFF_CALLBACK);
+	}
 
 	@NonNull
 	@Override
@@ -35,26 +55,14 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position)
 	{
-		FoodItem foodItem = foodItemList.get(position);
+		FoodItem foodItem = getItem(position);
 		TextView foodName = holder.foodName;
 		foodName.setText(foodItem.getName());
 	}
 
-	@Override
-	public int getItemCount()
-	{
-		return foodItemList.size();
-	}
-
-	public void setFoodItemList(List<FoodItem> foodItemList)
-	{
-		this.foodItemList = foodItemList;
-		notifyDataSetChanged();
-	}
-
 	public FoodItem getFoodItemAt(int position)
 	{
-		return foodItemList.get(position);
+		return getItem(position);
 	}
 
 	public class ViewHolder extends RecyclerView.ViewHolder
@@ -73,7 +81,7 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
 				{
 					int position = getAdapterPosition();
 					if (listener != null && position != RecyclerView.NO_POSITION)
-						listener.onItemClick(foodItemList.get(position));
+						listener.onItemClick(getItem(position));
 				}
 			});
 		}
