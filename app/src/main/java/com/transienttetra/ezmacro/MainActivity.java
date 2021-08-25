@@ -2,6 +2,7 @@ package com.transienttetra.ezmacro;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -11,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ezmacro.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.transienttetra.ezmacro.util.EnergyConverter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -44,79 +47,106 @@ public class MainActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		energyProgressBar = findViewById(R.id.energyProgressBar);
-		energyPercent = findViewById(R.id.energyProgressPercent);
-		proteinProgressBar = findViewById(R.id.proteinProgressBar);
-		proteinPercent = findViewById(R.id.proteinProgressPercent);
-		fatProgressBar = findViewById(R.id.fatProgressBar);
-		fatPercent = findViewById(R.id.fatProgressPercent);
-		carbProgressBar = findViewById(R.id.carbProgressBar);
-		carbPercent = findViewById(R.id.carbProgressPercent);
-
-		// todo temporary
-		Nutrition goal = new Nutrition(EnergyConverter.kcalToJoule(3000), 200, 90, 250);
-
-		FloatingActionButton addFoodItemButton = findViewById(R.id.addFoodItemButton);
-		addFoodItemButton.setOnClickListener(new View.OnClickListener()
+		BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+		bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
 		{
 			@Override
-			public void onClick(View v)
+			public boolean onNavigationItemSelected(@NonNull MenuItem item)
 			{
-				Intent intent = new Intent(MainActivity.this, AddEditFoodItemActivity.class);
-				startActivity(intent);
-			}
-		});
+				Fragment selectedFragment = null;
 
-		RecyclerView foodItemsView = findViewById(R.id.foodItemsView);
-		FoodItemAdapter foodItemAdapter = new FoodItemAdapter();
-		foodItemsView.setAdapter(foodItemAdapter);
-		foodItemsView.setLayoutManager(new LinearLayoutManager(this));
-		foodItemsView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
-		mainActivityViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(MainActivityViewModel.class);
-		mainActivityViewModel.getAll().observe(this, new Observer<List<FoodItem>>()
-		{
-			@Override
-			public void onChanged(List<FoodItem> foodItems)
-			{
-				Nutrition progress = new Nutrition();
-				for (FoodItem foodItem : foodItems)
+				switch (item.getItemId())
 				{
-					progress.add(foodItem.getNutrition());
+					case R.id.nav_home:
+						selectedFragment = new HomeFragment();
+						break;
+					case R.id.nav_food_db:
+						selectedFragment = new FoodDbFragment();
+						break;
+					case R.id.nav_settings:
+						selectedFragment = new SettingsFragment();
+						break;
 				}
-				setProgress(goal, progress);
-				foodItemAdapter.submitList(foodItems);
+
+				getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, selectedFragment).commit();
+				return true;
 			}
 		});
+		getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HomeFragment()).commit();
 
-		new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
-		{
-			@Override
-			public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target)
-			{
-				return false;
-			}
-
-			@Override
-			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
-			{
-				FoodItem toDelete = foodItemAdapter.getFoodItemAt(viewHolder.getAdapterPosition());
-				String foodName = toDelete.getName();
-				mainActivityViewModel.delete(toDelete);
-				Toast.makeText(getApplicationContext(), getString(R.string.deleteFoodItemMainActivity) + foodName, Toast.LENGTH_SHORT).show();
-			}
-		}).attachToRecyclerView(foodItemsView);
-
-		foodItemAdapter.setOnItemClickListener(new FoodItemAdapter.OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(FoodItem foodItem)
-			{
-				Intent intent = new Intent(MainActivity.this, AddEditFoodItemActivity.class);
-				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getId());
-				startActivity(intent);
-			}
-		});
+//		energyProgressBar = findViewById(R.id.energyProgressBar);
+//		energyPercent = findViewById(R.id.energyProgressPercent);
+//		proteinProgressBar = findViewById(R.id.proteinProgressBar);
+//		proteinPercent = findViewById(R.id.proteinProgressPercent);
+//		fatProgressBar = findViewById(R.id.fatProgressBar);
+//		fatPercent = findViewById(R.id.fatProgressPercent);
+//		carbProgressBar = findViewById(R.id.carbProgressBar);
+//		carbPercent = findViewById(R.id.carbProgressPercent);
+//
+//		// todo temporary
+//		Nutrition goal = new Nutrition(EnergyConverter.kcalToJoule(3000), 200, 90, 250);
+//
+//		FloatingActionButton addFoodItemButton = findViewById(R.id.addFoodItemButton);
+//		addFoodItemButton.setOnClickListener(new View.OnClickListener()
+//		{
+//			@Override
+//			public void onClick(View v)
+//			{
+//				Intent intent = new Intent(MainActivity.this, AddEditFoodItemActivity.class);
+//				startActivity(intent);
+//			}
+//		});
+//
+//		RecyclerView foodItemsView = findViewById(R.id.foodItemsView);
+//		FoodItemAdapter foodItemAdapter = new FoodItemAdapter();
+//		foodItemsView.setAdapter(foodItemAdapter);
+//		foodItemsView.setLayoutManager(new LinearLayoutManager(this));
+//		foodItemsView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+//
+//		mainActivityViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(MainActivityViewModel.class);
+//		mainActivityViewModel.getAll().observe(this, new Observer<List<FoodItem>>()
+//		{
+//			@Override
+//			public void onChanged(List<FoodItem> foodItems)
+//			{
+//				Nutrition progress = new Nutrition();
+//				for (FoodItem foodItem : foodItems)
+//				{
+//					progress.add(foodItem.getNutrition());
+//				}
+//				setProgress(goal, progress);
+//				foodItemAdapter.submitList(foodItems);
+//			}
+//		});
+//
+//		new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
+//		{
+//			@Override
+//			public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target)
+//			{
+//				return false;
+//			}
+//
+//			@Override
+//			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
+//			{
+//				FoodItem toDelete = foodItemAdapter.getFoodItemAt(viewHolder.getAdapterPosition());
+//				String foodName = toDelete.getName();
+//				mainActivityViewModel.delete(toDelete);
+//				Toast.makeText(getApplicationContext(), getString(R.string.deleteFoodItemMainActivity) + foodName, Toast.LENGTH_SHORT).show();
+//			}
+//		}).attachToRecyclerView(foodItemsView);
+//
+//		foodItemAdapter.setOnItemClickListener(new FoodItemAdapter.OnItemClickListener()
+//		{
+//			@Override
+//			public void onItemClick(FoodItem foodItem)
+//			{
+//				Intent intent = new Intent(MainActivity.this, AddEditFoodItemActivity.class);
+//				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getId());
+//				startActivity(intent);
+//			}
+//		});
 	}
 
 	private void setProgress(Nutrition target, Nutrition current)

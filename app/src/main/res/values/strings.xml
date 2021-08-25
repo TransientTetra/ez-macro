@@ -30,4 +30,7 @@
     <string name="barcodeText">Barcode</string>
     <string name="add_food_item">Add food item</string>
     <string name="deleteFoodItemMainActivity">"Deleted food item "</string>
+    <string name="bottom_nav_home">Home</string>
+    <string name="bottom_nav_food_db">Food Database</string>
+    <string name="bottom_nav_settings">Settings</string>
 </resources>
