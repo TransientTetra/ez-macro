@@ -33,4 +33,5 @@
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_food_db">Food Database</string>
     <string name="bottom_nav_settings">Settings</string>
+    <string name="food_db_title">All food items</string>
 </resources>

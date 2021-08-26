@@ -1,11 +1,13 @@
 package com.transienttetra.ezmacro;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,9 +60,6 @@ public class AddEditFoodItemActivity extends AppCompatActivity
 				saveFoodItem();
 			}
 		});
-
-		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-
 
 		viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(AddEditFoodItemViewModel.class);
 
@@ -141,5 +140,17 @@ public class AddEditFoodItemActivity extends AppCompatActivity
 		else
 			viewModel.insert(foodItem);
 		finish();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				finish();
+				break;
+		}
+		return true;
 	}
 }
