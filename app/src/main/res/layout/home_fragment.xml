@@ -23,12 +23,9 @@
         android:id="@+id/fatConstraintLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/carbConstraintLayout"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/energyConstraintLayout">
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/proteinConstraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/proteinConstraintLayout">
 
         <ProgressBar
             android:id="@+id/fatProgressBar"
@@ -37,17 +34,16 @@
             android:layout_height="0dp"
             android:progressTint="@color/fatProgressBar"
             android:scaleY="2"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fatProgressBar">
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/fatProgressBar"
+            app:layout_constraintTop_toTopOf="@+id/fatProgressBar">
 
             <TextView
                 android:id="@+id/fatProgressText"
@@ -75,10 +71,9 @@
         android:id="@+id/proteinConstraintLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/energyConstraintLayout"
-        app:layout_constraintTop_toTopOf="@+id/energyConstraintLayout">
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/energyConstraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/energyConstraintLayout">
 
         <ProgressBar
             android:id="@+id/proteinProgressBar"
@@ -87,17 +82,16 @@
             android:layout_height="0dp"
             android:progressTint="@color/proteinProgressBar"
             android:scaleY="2"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/proteinProgressBar">
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/proteinProgressBar"
+            app:layout_constraintTop_toTopOf="@+id/proteinProgressBar">
 
             <TextView
                 android:id="@+id/proteinProgressText"
@@ -125,10 +119,8 @@
         android:id="@+id/energyConstraintLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/proteinConstraintLayout"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -139,17 +131,16 @@
             android:layout_height="0dp"
             android:progressTint="@color/caloriesProgressBar"
             android:scaleY="2"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/energyProgressBar">
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/energyProgressBar"
+            app:layout_constraintTop_toTopOf="@+id/energyProgressBar">
 
             <TextView
                 android:id="@+id/energyProgressText"
@@ -188,10 +179,9 @@
         android:id="@+id/carbConstraintLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/fatConstraintLayout"
-        app:layout_constraintTop_toTopOf="@+id/fatConstraintLayout">
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/fatConstraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/fatConstraintLayout">
 
         <ProgressBar
             android:id="@+id/carbProgressBar"
@@ -200,17 +190,16 @@
             android:layout_height="0dp"
             android:progressTint="@color/carbProgressBar"
             android:scaleY="2"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/carbProgressBar">
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/carbProgressBar"
+            app:layout_constraintTop_toTopOf="@+id/carbProgressBar">
 
             <TextView
                 android:id="@+id/carbProgressText"
