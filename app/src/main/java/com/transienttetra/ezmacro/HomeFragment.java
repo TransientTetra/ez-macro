@@ -135,9 +135,19 @@ public class HomeFragment extends Fragment
 
 	private void setSingleProgress(int percent, ProgressBar progressBar, TextView textView)
 	{
-		// todo what when over 100%?
 		percent = Math.max(percent, 0);
-		progressBar.setProgress(percent);
+		// we are using secondary progress for primary progress, and using progress property as overconsumption
+		// progress
+		if (percent <= 100)
+		{
+			progressBar.setSecondaryProgress(percent);
+			progressBar.setProgress(0);
+		}
+		else
+		{
+			progressBar.setSecondaryProgress(100);
+			progressBar.setProgress(percent - 100);
+		}
 		textView.setText(percent + "%");
 	}
 

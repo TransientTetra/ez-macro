@@ -7,8 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="caloriesProgressBar">#3528a8</color>
-    <color name="proteinProgressBar">#bfb326</color>
-    <color name="fatProgressBar">#8a28ad</color>
-    <color name="carbProgressBar">#40c26d</color>
+    <color name="energy_progress_bar_fg">#3528a8</color>
+    <color name="protein_progress_bar_fg">#bfb326</color>
+    <color name="fat_progress_bar_fg">#8a28ad</color>
+    <color name="carb_progress_bar_fg">#40c26d</color>
+    <color name="over_consumption_progress_bar">#ff0000</color>
 </resources>
