@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.entities;
 
 import androidx.room.Embedded;
 import androidx.room.Entity;
@@ -20,7 +20,7 @@ public class FoodItem
 	 * Unique ID
 	 */
 	@PrimaryKey(autoGenerate = true)
-	private int id;
+	private int foodItemId;
 
 	/**
 	 * The name of the food item
@@ -165,13 +165,13 @@ public class FoodItem
 		this.description = description;
 	}
 
-	public int getId()
+	public int getFoodItemId()
 	{
-		return id;
+		return foodItemId;
 	}
 
-	public void setId(int id)
+	public void setFoodItemId(int foodItemId)
 	{
-		this.id = id;
+		this.foodItemId = foodItemId;
 	}
 }

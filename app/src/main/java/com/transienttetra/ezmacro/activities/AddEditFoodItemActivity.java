@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import com.example.ezmacro.R;
+import com.transienttetra.ezmacro.AddEditFoodItemViewModel;
+import com.transienttetra.ezmacro.entities.Nutrition;
+import com.transienttetra.ezmacro.entities.FoodItem;
 import com.transienttetra.ezmacro.util.EnergyConverter;
 
 public class AddEditFoodItemActivity extends AppCompatActivity
@@ -134,7 +137,7 @@ public class AddEditFoodItemActivity extends AppCompatActivity
 		FoodItem foodItem = new FoodItem(name, description, nutrition, barcode, servings, weight, isFavorite);
 		if (intent.hasExtra(EXTRA_ID) && foodItemId != -1)
 		{
-			foodItem.setId(foodItemId);
+			foodItem.setFoodItemId(foodItemId);
 			viewModel.update(foodItem);
 		}
 		else

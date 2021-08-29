@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,9 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ezmacro.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.transienttetra.ezmacro.FoodItemAdapter;
+import com.transienttetra.ezmacro.HomeFragmentViewModel;
+import com.transienttetra.ezmacro.activities.AddEditFoodItemActivity;
+import com.transienttetra.ezmacro.entities.FoodItem;
+import com.transienttetra.ezmacro.entities.Nutrition;
+import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 import com.transienttetra.ezmacro.util.EnergyConverter;
 
-import java.util.List;
+import java.time.LocalDate;
 
 public class HomeFragment extends Fragment
 {
@@ -40,6 +46,9 @@ public class HomeFragment extends Fragment
 	private TextView carbPercent;
 
 	private HomeFragmentViewModel homeFragmentViewModel;
+	private Nutrition goal;
+	private FoodItemAdapter foodItemAdapter;
+
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -60,7 +69,7 @@ public class HomeFragment extends Fragment
 		carbPercent = getView().findViewById(R.id.carbProgressPercent);
 
 		// todo temporary
-		Nutrition goal = new Nutrition(EnergyConverter.kcalToJoule(3000), 200, 90, 250);
+		goal = new Nutrition(EnergyConverter.kcalToJoule(3000), 200, 90, 250);
 
 		FloatingActionButton addFoodItemButton = getView().findViewById(R.id.addFoodItemButton);
 		addFoodItemButton.setOnClickListener(new View.OnClickListener()
@@ -74,26 +83,15 @@ public class HomeFragment extends Fragment
 		});
 
 		RecyclerView foodItemsView = getView().findViewById(R.id.foodItemsView);
-		FoodItemAdapter foodItemAdapter = new FoodItemAdapter();
+		foodItemAdapter = new FoodItemAdapter();
 		foodItemsView.setAdapter(foodItemAdapter);
 		foodItemsView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		foodItemsView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
 		homeFragmentViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(HomeFragmentViewModel.class);
-		homeFragmentViewModel.getAll().observe(this, new Observer<List<FoodItem>>()
-		{
-			@Override
-			public void onChanged(List<FoodItem> foodItems)
-			{
-				Nutrition progress = new Nutrition();
-				for (FoodItem foodItem : foodItems)
-				{
-					progress.add(foodItem.getNutrition());
-				}
-				setProgress(goal, progress);
-				foodItemAdapter.submitList(foodItems);
-			}
-		});
+		// todo temporary hardcoded date
+		LocalDate dayLogDate = LocalDate.now();
+		updateDayLog(dayLogDate);
 
 		new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
 		{
@@ -108,7 +106,7 @@ public class HomeFragment extends Fragment
 			{
 				FoodItem toDelete = foodItemAdapter.getFoodItemAt(viewHolder.getAdapterPosition());
 				String foodName = toDelete.getName();
-				homeFragmentViewModel.delete(toDelete);
+//				homeFragmentViewModel.delete(toDelete);
 				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.deleteFoodItemMainActivity) + foodName, Toast.LENGTH_SHORT).show();
 			}
 		}).attachToRecyclerView(foodItemsView);
@@ -119,8 +117,26 @@ public class HomeFragment extends Fragment
 			public void onItemClick(FoodItem foodItem)
 			{
 				Intent intent = new Intent(getActivity(), AddEditFoodItemActivity.class);
-				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getId());
+				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getFoodItemId());
 				startActivity(intent);
+			}
+		});
+	}
+
+	private void updateDayLog(LocalDate dayLogDate)
+	{
+		homeFragmentViewModel.getDayLog(dayLogDate).observe(this, new Observer<DayLogWithFoodItems>()
+		{
+			@Override
+			public void onChanged(DayLogWithFoodItems dayLog)
+			{
+				Nutrition progress = new Nutrition();
+				for (FoodItem foodItem : dayLog.getFoodItemList())
+				{
+					progress.add(foodItem.getNutrition());
+				}
+				setProgress(goal, progress);
+				foodItemAdapter.submitList(dayLog.getFoodItemList());
 			}
 		});
 	}

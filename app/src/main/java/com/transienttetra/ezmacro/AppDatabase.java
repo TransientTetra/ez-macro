@@ -5,53 +5,29 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
-@Database(entities = {FoodItem.class}, version = 2)
+import com.transienttetra.ezmacro.entities.DayLog;
+import com.transienttetra.ezmacro.entities.FoodItem;
+import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
+
+@Database(entities = {FoodItem.class, DayLog.class, DayLogFoodItemCrossRef.class}, version = 4)
+@TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase
 {
 	private static AppDatabase instance;
 
 	public abstract FoodItemDao FoodItemDao();
+	public abstract DayLogDao DayLogDao();
 
 	public static synchronized AppDatabase getInstance(Context context)
 	{
 		if (instance == null)
 		{
-			instance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "FoodDatabase")
+			instance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "AppDatabase")
 				.fallbackToDestructiveMigration()
-//				.addCallback(roomCallback)
 				.build();
 		}
 		return instance;
 	}
-
-//	private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback()
-//	{
-//		@Override
-//		public void onCreate(@NonNull SupportSQLiteDatabase db)
-//		{
-//			super.onCreate(db);
-//			new PopulateDbAsyncTask(instance).execute();
-//		}
-//	};
-//
-//	// todo example, remove
-//	private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void>
-//	{
-//		private FoodItemDao foodItemDao;
-//
-//		public PopulateDbAsyncTask(AppDatabase db)
-//		{
-//			this.foodItemDao = db.FoodItemDao();
-//		}
-//
-//		@Override
-//		protected Void doInBackground(Void... voids)
-//		{
-//			foodItemDao.insert(new FoodItem("Pizza", "", new Nutrition(), "", 0, 0, false));
-//			foodItemDao.insert(new FoodItem("Pizza", "", new Nutrition(), "", 0, 0, false));
-//			foodItemDao.insert(new FoodItem("Pizza", "", new Nutrition(), "", 0, 0, false));
-//			return null;
-//		}
-//	}
 }

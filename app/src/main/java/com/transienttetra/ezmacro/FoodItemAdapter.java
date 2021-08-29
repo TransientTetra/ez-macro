@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ezmacro.R;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.transienttetra.ezmacro.entities.FoodItem;
 
 public class FoodItemAdapter extends ListAdapter<FoodItem, FoodItemAdapter.ViewHolder>
 {
@@ -24,7 +22,7 @@ public class FoodItemAdapter extends ListAdapter<FoodItem, FoodItemAdapter.ViewH
 		@Override
 		public boolean areItemsTheSame(@NonNull FoodItem oldItem, @NonNull FoodItem newItem)
 		{
-			return oldItem.getId() == newItem.getId();
+			return oldItem.getFoodItemId() == newItem.getFoodItemId();
 		}
 
 		@Override

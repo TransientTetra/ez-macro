@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,9 @@ import android.view.MenuItem;
 
 import com.example.ezmacro.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.transienttetra.ezmacro.fragments.FoodDbFragment;
+import com.transienttetra.ezmacro.fragments.HomeFragment;
+import com.transienttetra.ezmacro.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity
 {

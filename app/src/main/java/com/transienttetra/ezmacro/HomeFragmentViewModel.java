@@ -6,41 +6,36 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import java.util.List;
+import com.transienttetra.ezmacro.entities.DayLog;
+import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
+
+import java.time.LocalDate;
 
 public class HomeFragmentViewModel extends AndroidViewModel
 {
-	private FoodItemRepository repository;
-	private LiveData<List<FoodItem>> allFoodItems;
+	private DayLogRepository repository;
 	public HomeFragmentViewModel(@NonNull Application application)
 	{
 		super(application);
-		repository = new FoodItemRepository(application);
-		allFoodItems = repository.getAll();
+		repository = new DayLogRepository(application);
 	}
 
-	public void insert(FoodItem foodItem)
+	public void insert(DayLog dayLog)
 	{
-		repository.insert(foodItem);
+		repository.insert(dayLog);
 	}
 
-	public void update(FoodItem foodItem)
+	public void update(DayLog dayLog)
 	{
-		repository.update(foodItem);
+		repository.update(dayLog);
 	}
 
-	public void delete(FoodItem foodItem)
+	public LiveData<DayLogWithFoodItems> getDayLog(LocalDate date)
 	{
-		repository.delete(foodItem);
-	}
-
-	public void deleteAll()
-	{
-		repository.deleteAll();
-	}
-
-	public LiveData<List<FoodItem>> getAll()
-	{
-		return allFoodItems;
+//		if (repository.get(date) == null)
+		{
+			repository.insert(new DayLog(date));
+		}
+		return repository.get(date);
 	}
 }

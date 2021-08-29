@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.transienttetra.ezmacro.entities.FoodItem;
+
 import java.util.List;
 
 public class FoodItemRepository

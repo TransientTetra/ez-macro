@@ -8,6 +8,8 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.transienttetra.ezmacro.entities.FoodItem;
+
 import java.util.List;
 
 /**
@@ -33,9 +35,9 @@ public interface FoodItemDao
 	@Query("DELETE FROM FoodItem")
 	void deleteAll();
 
-	@Query("SELECT * FROM FoodItem ORDER BY id")
+	@Query("SELECT * FROM FoodItem ORDER BY foodItemId")
 	LiveData<List<FoodItem>> getAll();
 
-	@Query("SELECT * FROM FoodItem WHERE id = :id")
+	@Query("SELECT * FROM FoodItem WHERE foodItemId = :id")
 	LiveData<FoodItem> get(int id);
 }

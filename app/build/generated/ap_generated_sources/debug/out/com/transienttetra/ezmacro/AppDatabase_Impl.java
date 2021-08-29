@@ -28,19 +28,25 @@ import java.util.Set;
 public final class AppDatabase_Impl extends AppDatabase {
   private volatile FoodItemDao _foodItemDao;
 
+  private volatile DayLogDao _dayLogDao;
+
   @Override
   protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(2) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(4) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `FoodItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `description` TEXT, `barcode` TEXT, `servings` REAL NOT NULL, `weight` REAL NOT NULL, `isFavorite` INTEGER NOT NULL, `energy` REAL, `protein` REAL, `fats` REAL, `carbohydrates` REAL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `FoodItem` (`foodItemId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `description` TEXT, `barcode` TEXT, `servings` REAL NOT NULL, `weight` REAL NOT NULL, `isFavorite` INTEGER NOT NULL, `energy` REAL, `protein` REAL, `fats` REAL, `carbohydrates` REAL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `DayLog` (`dayLogDate` TEXT NOT NULL, PRIMARY KEY(`dayLogDate`))");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `DayLogFoodItemCrossRef` (`dayLogDate` TEXT NOT NULL, `foodItemId` INTEGER NOT NULL, PRIMARY KEY(`dayLogDate`, `foodItemId`))");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd6c0498eea36c36c89929239300e67b0')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e7a2cbed2441115f55ae703b8fcdd8a5')");
       }
 
       @Override
       public void dropAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("DROP TABLE IF EXISTS `FoodItem`");
+        _db.execSQL("DROP TABLE IF EXISTS `DayLog`");
+        _db.execSQL("DROP TABLE IF EXISTS `DayLogFoodItemCrossRef`");
         if (mCallbacks != null) {
           for (int _i = 0, _size = mCallbacks.size(); _i < _size; _i++) {
             mCallbacks.get(_i).onDestructiveMigration(_db);
@@ -80,7 +86,7 @@ public final class AppDatabase_Impl extends AppDatabase {
       @Override
       protected RoomOpenHelper.ValidationResult onValidateSchema(SupportSQLiteDatabase _db) {
         final HashMap<String, TableInfo.Column> _columnsFoodItem = new HashMap<String, TableInfo.Column>(11);
-        _columnsFoodItem.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFoodItem.put("foodItemId", new TableInfo.Column("foodItemId", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsFoodItem.put("name", new TableInfo.Column("name", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsFoodItem.put("description", new TableInfo.Column("description", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsFoodItem.put("barcode", new TableInfo.Column("barcode", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -96,13 +102,36 @@ public final class AppDatabase_Impl extends AppDatabase {
         final TableInfo _infoFoodItem = new TableInfo("FoodItem", _columnsFoodItem, _foreignKeysFoodItem, _indicesFoodItem);
         final TableInfo _existingFoodItem = TableInfo.read(_db, "FoodItem");
         if (! _infoFoodItem.equals(_existingFoodItem)) {
-          return new RoomOpenHelper.ValidationResult(false, "FoodItem(com.transienttetra.ezmacro.FoodItem).\n"
+          return new RoomOpenHelper.ValidationResult(false, "FoodItem(com.transienttetra.ezmacro.entities.FoodItem).\n"
                   + " Expected:\n" + _infoFoodItem + "\n"
                   + " Found:\n" + _existingFoodItem);
         }
+        final HashMap<String, TableInfo.Column> _columnsDayLog = new HashMap<String, TableInfo.Column>(1);
+        _columnsDayLog.put("dayLogDate", new TableInfo.Column("dayLogDate", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysDayLog = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesDayLog = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoDayLog = new TableInfo("DayLog", _columnsDayLog, _foreignKeysDayLog, _indicesDayLog);
+        final TableInfo _existingDayLog = TableInfo.read(_db, "DayLog");
+        if (! _infoDayLog.equals(_existingDayLog)) {
+          return new RoomOpenHelper.ValidationResult(false, "DayLog(com.transienttetra.ezmacro.entities.DayLog).\n"
+                  + " Expected:\n" + _infoDayLog + "\n"
+                  + " Found:\n" + _existingDayLog);
+        }
+        final HashMap<String, TableInfo.Column> _columnsDayLogFoodItemCrossRef = new HashMap<String, TableInfo.Column>(2);
+        _columnsDayLogFoodItemCrossRef.put("dayLogDate", new TableInfo.Column("dayLogDate", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDayLogFoodItemCrossRef.put("foodItemId", new TableInfo.Column("foodItemId", "INTEGER", true, 2, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysDayLogFoodItemCrossRef = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesDayLogFoodItemCrossRef = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoDayLogFoodItemCrossRef = new TableInfo("DayLogFoodItemCrossRef", _columnsDayLogFoodItemCrossRef, _foreignKeysDayLogFoodItemCrossRef, _indicesDayLogFoodItemCrossRef);
+        final TableInfo _existingDayLogFoodItemCrossRef = TableInfo.read(_db, "DayLogFoodItemCrossRef");
+        if (! _infoDayLogFoodItemCrossRef.equals(_existingDayLogFoodItemCrossRef)) {
+          return new RoomOpenHelper.ValidationResult(false, "DayLogFoodItemCrossRef(com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef).\n"
+                  + " Expected:\n" + _infoDayLogFoodItemCrossRef + "\n"
+                  + " Found:\n" + _existingDayLogFoodItemCrossRef);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "d6c0498eea36c36c89929239300e67b0", "917bc1adba40faf756b3ce09f73d24de");
+    }, "e7a2cbed2441115f55ae703b8fcdd8a5", "6ef8e10d0c5e65036d0f0c47a6394e56");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)
@@ -115,7 +144,7 @@ public final class AppDatabase_Impl extends AppDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "FoodItem");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "FoodItem","DayLog","DayLogFoodItemCrossRef");
   }
 
   @Override
@@ -125,6 +154,8 @@ public final class AppDatabase_Impl extends AppDatabase {
     try {
       super.beginTransaction();
       _db.execSQL("DELETE FROM `FoodItem`");
+      _db.execSQL("DELETE FROM `DayLog`");
+      _db.execSQL("DELETE FROM `DayLogFoodItemCrossRef`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
@@ -139,6 +170,7 @@ public final class AppDatabase_Impl extends AppDatabase {
   protected Map<Class<?>, List<Class<?>>> getRequiredTypeConverters() {
     final HashMap<Class<?>, List<Class<?>>> _typeConvertersMap = new HashMap<Class<?>, List<Class<?>>>();
     _typeConvertersMap.put(FoodItemDao.class, FoodItemDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(DayLogDao.class, DayLogDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
 
@@ -152,6 +184,20 @@ public final class AppDatabase_Impl extends AppDatabase {
           _foodItemDao = new FoodItemDao_Impl(this);
         }
         return _foodItemDao;
+      }
+    }
+  }
+
+  @Override
+  public DayLogDao DayLogDao() {
+    if (_dayLogDao != null) {
+      return _dayLogDao;
+    } else {
+      synchronized(this) {
+        if(_dayLogDao == null) {
+          _dayLogDao = new DayLogDao_Impl(this);
+        }
+        return _dayLogDao;
       }
     }
   }

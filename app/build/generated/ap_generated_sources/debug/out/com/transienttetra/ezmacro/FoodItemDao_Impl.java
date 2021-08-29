@@ -10,6 +10,9 @@ import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
+import com.transienttetra.ezmacro.entities.FoodItem;
+import com.transienttetra.ezmacro.entities.Nutrition;
+
 import java.lang.Class;
 import java.lang.Exception;
 import java.lang.Override;
@@ -37,12 +40,12 @@ public final class FoodItemDao_Impl implements FoodItemDao {
     this.__insertionAdapterOfFoodItem = new EntityInsertionAdapter<FoodItem>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR REPLACE INTO `FoodItem` (`id`,`name`,`description`,`barcode`,`servings`,`weight`,`isFavorite`,`energy`,`protein`,`fats`,`carbohydrates`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `FoodItem` (`foodItemId`,`name`,`description`,`barcode`,`servings`,`weight`,`isFavorite`,`energy`,`protein`,`fats`,`carbohydrates`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, FoodItem value) {
-        stmt.bindLong(1, value.getId());
+        stmt.bindLong(1, value.getFoodItemId());
         if (value.getName() == null) {
           stmt.bindNull(2);
         } else {
@@ -80,23 +83,23 @@ public final class FoodItemDao_Impl implements FoodItemDao {
     this.__deletionAdapterOfFoodItem = new EntityDeletionOrUpdateAdapter<FoodItem>(__db) {
       @Override
       public String createQuery() {
-        return "DELETE FROM `FoodItem` WHERE `id` = ?";
+        return "DELETE FROM `FoodItem` WHERE `foodItemId` = ?";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, FoodItem value) {
-        stmt.bindLong(1, value.getId());
+        stmt.bindLong(1, value.getFoodItemId());
       }
     };
     this.__updateAdapterOfFoodItem = new EntityDeletionOrUpdateAdapter<FoodItem>(__db) {
       @Override
       public String createQuery() {
-        return "UPDATE OR ABORT `FoodItem` SET `id` = ?,`name` = ?,`description` = ?,`barcode` = ?,`servings` = ?,`weight` = ?,`isFavorite` = ?,`energy` = ?,`protein` = ?,`fats` = ?,`carbohydrates` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `FoodItem` SET `foodItemId` = ?,`name` = ?,`description` = ?,`barcode` = ?,`servings` = ?,`weight` = ?,`isFavorite` = ?,`energy` = ?,`protein` = ?,`fats` = ?,`carbohydrates` = ? WHERE `foodItemId` = ?";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, FoodItem value) {
-        stmt.bindLong(1, value.getId());
+        stmt.bindLong(1, value.getFoodItemId());
         if (value.getName() == null) {
           stmt.bindNull(2);
         } else {
@@ -129,7 +132,7 @@ public final class FoodItemDao_Impl implements FoodItemDao {
           stmt.bindNull(10);
           stmt.bindNull(11);
         }
-        stmt.bindLong(12, value.getId());
+        stmt.bindLong(12, value.getFoodItemId());
       }
     };
     this.__preparedStmtOfDeleteAll = new SharedSQLiteStatement(__db) {
@@ -193,14 +196,14 @@ public final class FoodItemDao_Impl implements FoodItemDao {
 
   @Override
   public LiveData<List<FoodItem>> getAll() {
-    final String _sql = "SELECT * FROM FoodItem ORDER BY id";
+    final String _sql = "SELECT * FROM FoodItem ORDER BY foodItemId";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return __db.getInvalidationTracker().createLiveData(new String[]{"FoodItem"}, false, new Callable<List<FoodItem>>() {
       @Override
       public List<FoodItem> call() throws Exception {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
-          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfFoodItemId = CursorUtil.getColumnIndexOrThrow(_cursor, "foodItemId");
           final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
           final int _cursorIndexOfBarcode = CursorUtil.getColumnIndexOrThrow(_cursor, "barcode");
@@ -255,9 +258,9 @@ public final class FoodItemDao_Impl implements FoodItemDao {
               _tmpNutrition = null;
             }
             _item = new FoodItem(_tmpName,_tmpDescription,_tmpNutrition,_tmpBarcode,_tmpServings,_tmpWeight,_tmpIsFavorite);
-            final int _tmpId;
-            _tmpId = _cursor.getInt(_cursorIndexOfId);
-            _item.setId(_tmpId);
+            final int _tmpFoodItemId;
+            _tmpFoodItemId = _cursor.getInt(_cursorIndexOfFoodItemId);
+            _item.setFoodItemId(_tmpFoodItemId);
             _result.add(_item);
           }
           return _result;
@@ -275,7 +278,7 @@ public final class FoodItemDao_Impl implements FoodItemDao {
 
   @Override
   public LiveData<FoodItem> get(final int id) {
-    final String _sql = "SELECT * FROM FoodItem WHERE id = ?";
+    final String _sql = "SELECT * FROM FoodItem WHERE foodItemId = ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
     _statement.bindLong(_argIndex, id);
@@ -284,7 +287,7 @@ public final class FoodItemDao_Impl implements FoodItemDao {
       public FoodItem call() throws Exception {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
-          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfFoodItemId = CursorUtil.getColumnIndexOrThrow(_cursor, "foodItemId");
           final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
           final int _cursorIndexOfBarcode = CursorUtil.getColumnIndexOrThrow(_cursor, "barcode");
@@ -338,9 +341,9 @@ public final class FoodItemDao_Impl implements FoodItemDao {
               _tmpNutrition = null;
             }
             _result = new FoodItem(_tmpName,_tmpDescription,_tmpNutrition,_tmpBarcode,_tmpServings,_tmpWeight,_tmpIsFavorite);
-            final int _tmpId;
-            _tmpId = _cursor.getInt(_cursorIndexOfId);
-            _result.setId(_tmpId);
+            final int _tmpFoodItemId;
+            _tmpFoodItemId = _cursor.getInt(_cursorIndexOfFoodItemId);
+            _result.setFoodItemId(_tmpFoodItemId);
           } else {
             _result = null;
           }

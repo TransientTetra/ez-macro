@@ -1,6 +1,5 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.entities;
 
-import androidx.annotation.Nullable;
 import androidx.room.Ignore;
 
 /**

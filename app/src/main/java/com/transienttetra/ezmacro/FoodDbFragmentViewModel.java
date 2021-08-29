@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.transienttetra.ezmacro.entities.FoodItem;
+
 import java.util.List;
 
 public class FoodDbFragmentViewModel extends AndroidViewModel

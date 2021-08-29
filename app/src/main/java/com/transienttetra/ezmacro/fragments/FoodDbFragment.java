@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.fragments;
 
 
 import android.content.Intent;
@@ -20,6 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ezmacro.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.transienttetra.ezmacro.FoodDbFragmentViewModel;
+import com.transienttetra.ezmacro.FoodItemAdapter;
+import com.transienttetra.ezmacro.activities.AddEditFoodItemActivity;
+import com.transienttetra.ezmacro.entities.FoodItem;
 
 import java.util.List;
 
@@ -86,7 +90,7 @@ public class FoodDbFragment extends Fragment
 			public void onItemClick(FoodItem foodItem)
 			{
 				Intent intent = new Intent(getActivity(), AddEditFoodItemActivity.class);
-				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getId());
+				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getFoodItemId());
 				startActivity(intent);
 			}
 		});
