@@ -1,10 +1,13 @@
 package com.transienttetra.ezmacro.fragments;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +32,10 @@ import com.transienttetra.ezmacro.entities.Nutrition;
 import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 import com.transienttetra.ezmacro.util.EnergyConverter;
 
+import org.w3c.dom.Text;
+
 import java.time.LocalDate;
+import java.util.Date;
 
 public class HomeFragment extends Fragment
 {
@@ -45,9 +51,14 @@ public class HomeFragment extends Fragment
 	private ProgressBar carbProgressBar;
 	private TextView carbPercent;
 
+	private Button chooseDateButton;
+	private DatePickerDialog datePickerDialog;
+
 	private HomeFragmentViewModel homeFragmentViewModel;
 	private Nutrition goal;
 	private FoodItemAdapter foodItemAdapter;
+
+	private LocalDate currentDate;
 
 	@Nullable
 	@Override
@@ -67,6 +78,31 @@ public class HomeFragment extends Fragment
 		fatPercent = getView().findViewById(R.id.fatProgressPercent);
 		carbProgressBar = getView().findViewById(R.id.carbProgressBar);
 		carbPercent = getView().findViewById(R.id.carbProgressPercent);
+		chooseDateButton = getView().findViewById(R.id.chooseDateButton);
+
+		currentDate = LocalDate.now();
+
+		DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
+		{
+			@Override
+			public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+			{
+				currentDate = LocalDate.of(year, month, dayOfMonth);
+				updateDayLog();
+			}
+		};
+
+		datePickerDialog = new DatePickerDialog(getActivity(), dateSetListener, currentDate.getYear(),
+			currentDate.getMonthValue(), currentDate.getDayOfMonth());
+
+		chooseDateButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				datePickerDialog.show();
+			}
+		});
 
 		// todo temporary
 		goal = new Nutrition(EnergyConverter.kcalToJoule(3000), 200, 90, 250);
@@ -77,8 +113,8 @@ public class HomeFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(getActivity(), AddEditFoodItemActivity.class);
-				startActivity(intent);
+//				Intent intent = new Intent(getActivity(), AddEditFoodItemActivity.class);
+//				startActivity(intent);
 			}
 		});
 
@@ -89,9 +125,7 @@ public class HomeFragment extends Fragment
 		foodItemsView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
 		homeFragmentViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(HomeFragmentViewModel.class);
-		// todo temporary hardcoded date
-		LocalDate dayLogDate = LocalDate.now();
-		updateDayLog(dayLogDate);
+		updateDayLog();
 
 		new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
 		{
@@ -123,9 +157,10 @@ public class HomeFragment extends Fragment
 		});
 	}
 
-	private void updateDayLog(LocalDate dayLogDate)
+	private void updateDayLog()
 	{
-		homeFragmentViewModel.getDayLog(dayLogDate).observe(this, new Observer<DayLogWithFoodItems>()
+		chooseDateButton.setText(currentDate.toString());
+		homeFragmentViewModel.getDayLog(currentDate).observe(this, new Observer<DayLogWithFoodItems>()
 		{
 			@Override
 			public void onChanged(DayLogWithFoodItems dayLog)
