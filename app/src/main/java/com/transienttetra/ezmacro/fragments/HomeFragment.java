@@ -22,20 +22,19 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ezmacro.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.transienttetra.ezmacro.FoodItemAdapter;
 import com.transienttetra.ezmacro.HomeFragmentViewModel;
+import com.transienttetra.ezmacro.R;
 import com.transienttetra.ezmacro.activities.AddEditFoodItemActivity;
+import com.transienttetra.ezmacro.activities.AddFoodItemToDayLogActivity;
+import com.transienttetra.ezmacro.entities.DayLog;
 import com.transienttetra.ezmacro.entities.FoodItem;
 import com.transienttetra.ezmacro.entities.Nutrition;
 import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 import com.transienttetra.ezmacro.util.EnergyConverter;
 
-import org.w3c.dom.Text;
-
 import java.time.LocalDate;
-import java.util.Date;
 
 public class HomeFragment extends Fragment
 {
@@ -113,8 +112,9 @@ public class HomeFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-//				Intent intent = new Intent(getActivity(), AddEditFoodItemActivity.class);
-//				startActivity(intent);
+				Intent intent = new Intent(getActivity(), AddFoodItemToDayLogActivity.class);
+				intent.putExtra(AddFoodItemToDayLogActivity.EXTRA_DAY_LOG_ID, currentDate);
+				startActivity(intent);
 			}
 		});
 
@@ -140,8 +140,8 @@ public class HomeFragment extends Fragment
 			{
 				FoodItem toDelete = foodItemAdapter.getFoodItemAt(viewHolder.getAdapterPosition());
 				String foodName = toDelete.getName();
-//				homeFragmentViewModel.delete(toDelete);
-				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.deleteFoodItemMainActivity) + foodName, Toast.LENGTH_SHORT).show();
+				homeFragmentViewModel.detach(new DayLog(currentDate), toDelete);
+				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.food_item_detached), Toast.LENGTH_SHORT).show();
 			}
 		}).attachToRecyclerView(foodItemsView);
 
@@ -150,9 +150,9 @@ public class HomeFragment extends Fragment
 			@Override
 			public void onItemClick(FoodItem foodItem)
 			{
-				Intent intent = new Intent(getActivity(), AddEditFoodItemActivity.class);
-				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getFoodItemId());
-				startActivity(intent);
+//				Intent intent = new Intent(getActivity(), AddEditFoodItemActivity.class);
+//				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getFoodItemId());
+//				startActivity(intent);
 			}
 		});
 	}

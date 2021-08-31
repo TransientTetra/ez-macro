@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ezmacro.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.transienttetra.ezmacro.FoodDbFragmentViewModel;
 import com.transienttetra.ezmacro.FoodItemAdapter;
+import com.transienttetra.ezmacro.R;
 import com.transienttetra.ezmacro.activities.AddEditFoodItemActivity;
 import com.transienttetra.ezmacro.entities.FoodItem;
 
@@ -80,7 +80,7 @@ public class FoodDbFragment extends Fragment
 				FoodItem toDelete = foodItemAdapter.getFoodItemAt(viewHolder.getAdapterPosition());
 				String foodName = toDelete.getName();
 				viewModel.delete(toDelete);
-				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.deleteFoodItemMainActivity) + foodName, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.food_item_detached) + foodName, Toast.LENGTH_SHORT).show();
 			}
 		}).attachToRecyclerView(foodItemsView);
 

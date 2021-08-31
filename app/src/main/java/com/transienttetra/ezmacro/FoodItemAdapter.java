@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ezmacro.R;
 import com.transienttetra.ezmacro.entities.FoodItem;
 
 public class FoodItemAdapter extends ListAdapter<FoodItem, FoodItemAdapter.ViewHolder>

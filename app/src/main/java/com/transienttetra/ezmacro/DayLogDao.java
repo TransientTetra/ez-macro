@@ -1,5 +1,6 @@
 package com.transienttetra.ezmacro;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -10,6 +11,8 @@ import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.transienttetra.ezmacro.entities.DayLog;
+import com.transienttetra.ezmacro.entities.FoodItem;
+import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
 import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 
 import java.time.LocalDate;
@@ -41,4 +44,12 @@ public interface DayLogDao
 	@Transaction
 	@Query("SELECT * FROM DayLog WHERE dayLogDate = :dayLogDate")
 	LiveData<DayLogWithFoodItems> get(LocalDate dayLogDate);
+
+	@Transaction
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	void insert(DayLogFoodItemCrossRef dayLogFoodItemCrossRef);
+
+	@Transaction
+	@Delete
+	void delete(DayLogFoodItemCrossRef dayLogFoodItemCrossRef);
 }

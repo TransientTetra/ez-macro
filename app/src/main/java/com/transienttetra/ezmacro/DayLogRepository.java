@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import com.transienttetra.ezmacro.entities.DayLog;
+import com.transienttetra.ezmacro.entities.FoodItem;
+import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
 import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 
 import java.time.LocalDate;
@@ -51,6 +53,16 @@ public class DayLogRepository
 	public LiveData<DayLogWithFoodItems> get(LocalDate date)
 	{
 		return dayLogDao.get(date);
+	}
+
+	public void insert(DayLogFoodItemCrossRef dayLogFoodItemCrossRef)
+	{
+		new InsertCrossRefAsyncTask(dayLogDao).execute(dayLogFoodItemCrossRef);
+	}
+
+	public void delete(DayLogFoodItemCrossRef dayLogFoodItemCrossRef)
+	{
+		new DeleteCrossRefAsyncTask(dayLogDao).execute(dayLogFoodItemCrossRef);
 	}
 
 	private static class InsertAsyncTask extends AsyncTask<DayLog, Void, Void>
@@ -113,6 +125,38 @@ public class DayLogRepository
 		protected Void doInBackground(Void... voids)
 		{
 			dayLogDao.deleteAll();
+			return null;
+		}
+	}
+
+	private static class InsertCrossRefAsyncTask extends AsyncTask<DayLogFoodItemCrossRef, Void, Void>
+	{
+		private final DayLogDao dayLogDao;
+
+		private InsertCrossRefAsyncTask(DayLogDao dayLogDao)
+		{
+			this.dayLogDao = dayLogDao;
+		}
+		@Override
+		protected Void doInBackground(DayLogFoodItemCrossRef... dayLogFoodItemCrossRefs)
+		{
+			dayLogDao.insert(dayLogFoodItemCrossRefs[0]);
+			return null;
+		}
+	}
+
+	private static class DeleteCrossRefAsyncTask extends AsyncTask<DayLogFoodItemCrossRef, Void, Void>
+	{
+		private final DayLogDao dayLogDao;
+
+		private DeleteCrossRefAsyncTask(DayLogDao dayLogDao)
+		{
+			this.dayLogDao = dayLogDao;
+		}
+		@Override
+		protected Void doInBackground(DayLogFoodItemCrossRef... dayLogFoodItemCrossRefs)
+		{
+			dayLogDao.delete(dayLogFoodItemCrossRefs[0]);
 			return null;
 		}
 	}

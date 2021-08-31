@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.ezmacro.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.transienttetra.ezmacro.R;
 import com.transienttetra.ezmacro.fragments.FoodDbFragment;
 import com.transienttetra.ezmacro.fragments.HomeFragment;
 import com.transienttetra.ezmacro.fragments.SettingsFragment;

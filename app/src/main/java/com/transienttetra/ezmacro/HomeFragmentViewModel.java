@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.transienttetra.ezmacro.entities.DayLog;
+import com.transienttetra.ezmacro.entities.FoodItem;
+import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
 import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 
 import java.time.LocalDate;
@@ -25,17 +27,15 @@ public class HomeFragmentViewModel extends AndroidViewModel
 		repository.insert(dayLog);
 	}
 
-	public void update(DayLog dayLog)
+	public void detach(DayLog daylog, FoodItem foodItem)
 	{
-		repository.update(dayLog);
+		repository.delete(new DayLogFoodItemCrossRef(daylog.getDayLogDate(), foodItem.getFoodItemId()));
 	}
 
 	public LiveData<DayLogWithFoodItems> getDayLog(LocalDate date)
 	{
-//		if (repository.get(date) == null)
-		{
-			repository.insert(new DayLog(date));
-		}
+		// don't like this
+		repository.insert(new DayLog(date));
 		return repository.get(date);
 	}
 }
