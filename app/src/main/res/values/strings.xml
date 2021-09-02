@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">EzMacro</string>
-    <string name="caloriesProgressText">Calories:</string>
+    <string name="caloriesProgressText">Energy:</string>
     <string name="proteinProgressText">Protein:</string>
     <string name="fatProgressText">Fat:</string>
     <string name="carbProgressText">Carb:</string>
@@ -38,4 +38,6 @@
     <string name="weight_dialog_title">Input weight in grams</string>
     <string name="weight_dialog_save">Save</string>
     <string name="weight_dialog_hint">Weight</string>
+    <string name="log_empty_msg">Empty</string>
+    <string name="db_empty_msg">Empty</string>
 </resources>

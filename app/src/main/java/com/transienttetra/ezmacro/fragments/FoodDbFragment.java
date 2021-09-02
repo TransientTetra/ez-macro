@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ import java.util.List;
 public class FoodDbFragment extends Fragment
 {
 	private FoodDbFragmentViewModel viewModel;
+	private ViewSwitcher viewSwitcher;
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -40,7 +42,9 @@ public class FoodDbFragment extends Fragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
 	{
+		viewSwitcher = getView().findViewById(R.id.viewSwitcher);
 		FloatingActionButton addFoodItemButton = getView().findViewById(R.id.addFoodItemButton);
+
 		addFoodItemButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -62,6 +66,13 @@ public class FoodDbFragment extends Fragment
 			@Override
 			public void onChanged(List<FoodItem> foodItems)
 			{
+				if (foodItems.size() > 0)
+				{
+					if (viewSwitcher.getNextView().getId() == R.id.foodItemsView)
+						viewSwitcher.showNext();
+				}
+				else if (viewSwitcher.getNextView().getId() == R.id.emptyText)
+					viewSwitcher.showNext();
 				foodItemAdapter.submitList(foodItems);
 			}
 		});

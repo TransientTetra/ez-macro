@@ -12,4 +12,5 @@
     <color name="fat_progress_bar_fg">#8a28ad</color>
     <color name="carb_progress_bar_fg">#40c26d</color>
     <color name="over_consumption_progress_bar">#ff0000</color>
+    <color name="barely_visible_black">#33000000</color>
 </resources>

@@ -19,16 +19,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/foodItemsView"
+    <ViewSwitcher
+        android:id="@+id/viewSwitcher"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/foodDbTitle"
-        tools:listitem="@layout/food_item" />
+        app:layout_constraintTop_toBottomOf="@+id/foodDbTitle">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/foodItemsView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/food_item" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/emptyText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/db_empty_msg"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/barely_visible_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ViewSwitcher>
+
 
     <TextView
         android:id="@+id/foodDbTitle"

@@ -11,6 +11,8 @@ import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewAnimator;
+import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +37,7 @@ import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 import com.transienttetra.ezmacro.util.EnergyConverter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class HomeFragment extends Fragment
 {
@@ -56,6 +59,7 @@ public class HomeFragment extends Fragment
 	private HomeFragmentViewModel homeFragmentViewModel;
 	private Nutrition goal;
 	private FoodItemAdapter foodItemAdapter;
+	private ViewSwitcher viewSwitcher;
 
 	private LocalDate currentDate;
 
@@ -78,6 +82,7 @@ public class HomeFragment extends Fragment
 		carbProgressBar = getView().findViewById(R.id.carbProgressBar);
 		carbPercent = getView().findViewById(R.id.carbProgressPercent);
 		chooseDateButton = getView().findViewById(R.id.chooseDateButton);
+		viewSwitcher = getView().findViewById(R.id.viewSwitcher);
 
 		currentDate = LocalDate.now();
 
@@ -166,12 +171,20 @@ public class HomeFragment extends Fragment
 			public void onChanged(DayLogWithFoodItems dayLog)
 			{
 				Nutrition progress = new Nutrition();
-				for (FoodItem foodItem : dayLog.getFoodItemList())
+				List<FoodItem> foodItemList = dayLog.getFoodItemList();
+				if (foodItemList.size() > 0)
+				{
+					if (viewSwitcher.getNextView().getId() == R.id.foodItemsView)
+						viewSwitcher.showNext();
+				}
+				else if (viewSwitcher.getNextView().getId() == R.id.emptyText)
+					viewSwitcher.showNext();
+				for (FoodItem foodItem : foodItemList)
 				{
 					progress.add(foodItem.getNutrition());
 				}
 				setProgress(goal, progress);
-				foodItemAdapter.submitList(dayLog.getFoodItemList());
+				foodItemAdapter.submitList(foodItemList);
 			}
 		});
 	}
