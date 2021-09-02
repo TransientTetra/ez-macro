@@ -91,7 +91,7 @@ public class FoodDbFragment extends Fragment
 				FoodItem toDelete = foodItemAdapter.getFoodItemAt(viewHolder.getAdapterPosition());
 				String foodName = toDelete.getName();
 				viewModel.delete(toDelete);
-				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.food_item_detached) + foodName, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.food_item_removed), Toast.LENGTH_SHORT).show();
 			}
 		}).attachToRecyclerView(foodItemsView);
 

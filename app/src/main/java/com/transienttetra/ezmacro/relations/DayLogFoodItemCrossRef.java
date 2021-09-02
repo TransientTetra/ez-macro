@@ -1,12 +1,28 @@
 package com.transienttetra.ezmacro.relations;
 
+import static androidx.room.ForeignKey.CASCADE;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Index;
+
+import com.transienttetra.ezmacro.entities.DayLog;
+import com.transienttetra.ezmacro.entities.FoodItem;
 
 import java.time.LocalDate;
 
-@Entity(primaryKeys = {"dayLogDate", "foodItemId"}, indices = {@Index("foodItemId")})
+@Entity(primaryKeys = {"dayLogDate", "foodItemId"},
+	indices = {@Index("foodItemId")},
+	foreignKeys = {
+		@ForeignKey(onDelete = CASCADE,
+			entity = DayLog.class,
+			parentColumns = "dayLogDate",
+			childColumns = "dayLogDate"),
+		@ForeignKey(onDelete = CASCADE,
+			entity = FoodItem.class,
+			parentColumns = "foodItemId",
+			childColumns = "foodItemId")})
 public class DayLogFoodItemCrossRef
 {
 	@NonNull

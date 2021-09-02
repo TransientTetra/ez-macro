@@ -40,4 +40,5 @@
     <string name="weight_dialog_hint">Weight</string>
     <string name="log_empty_msg">Empty</string>
     <string name="db_empty_msg">Empty</string>
+    <string name="food_item_removed">Removed the item from the database</string>
 </resources>
