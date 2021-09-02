@@ -23,6 +23,7 @@ import com.transienttetra.ezmacro.AddFoodItemToDayLogViewModel;
 import com.transienttetra.ezmacro.FoodDbFragmentViewModel;
 import com.transienttetra.ezmacro.FoodItemAdapter;
 import com.transienttetra.ezmacro.R;
+import com.transienttetra.ezmacro.WeightDialog;
 import com.transienttetra.ezmacro.entities.DayLog;
 import com.transienttetra.ezmacro.entities.FoodItem;
 
@@ -75,38 +76,19 @@ public class AddFoodItemToDayLogActivity extends AppCompatActivity
 			public void onItemClick(FoodItem foodItem)
 			{
 				// attach food item to daylog
-				weightDialog(foodItem);
+				WeightDialog weightDialog = new WeightDialog(AddFoodItemToDayLogActivity.this,
+					new WeightDialog.OnSaveListener()
+					{
+						@Override
+						public void onSave(WeightDialog weightDialog)
+						{
+							LocalDate dayLogDate = (LocalDate) getIntent().getSerializableExtra(EXTRA_DAY_LOG_ID);
+							viewModel.attach(new DayLog(dayLogDate), foodItem, weightDialog.getWeight());
+							finish();
+						}
+					});
+				weightDialog.show();
 			}
 		});
-	}
-
-	private void weightDialog(FoodItem foodItem)
-	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-		final EditText editText = new EditText(AddFoodItemToDayLogActivity.this);
-		editText.setHint(R.string.weight_dialog_hint);
-		editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL|InputType.TYPE_CLASS_NUMBER);
-		dialogBuilder.setTitle(R.string.weight_dialog_title);
-		dialogBuilder.setView(editText);
-		LinearLayout layout = new LinearLayout(this);
-		layout.setOrientation(LinearLayout.VERTICAL);
-		layout.addView(editText);
-		dialogBuilder.setView(layout);
-		dialogBuilder.setPositiveButton(R.string.weight_dialog_save, (dialog, which) ->
-		{
-			LocalDate dayLogDate = (LocalDate) getIntent().getSerializableExtra(EXTRA_DAY_LOG_ID);
-			float weight;
-			try
-			{
-				weight = Float.parseFloat(editText.getText().toString());
-			}
-			catch (Exception e)
-			{
-				weight = 0;
-			};
-			viewModel.attach(new DayLog(dayLogDate), foodItem, weight);
-			finish();
-		});
-		dialogBuilder.show();
 	}
 }
