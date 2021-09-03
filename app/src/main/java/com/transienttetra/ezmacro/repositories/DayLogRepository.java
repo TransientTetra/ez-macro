@@ -1,12 +1,13 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.repositories;
 
 import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.transienttetra.ezmacro.AppDatabase;
+import com.transienttetra.ezmacro.daos.DayLogDao;
 import com.transienttetra.ezmacro.entities.DayLog;
-import com.transienttetra.ezmacro.entities.FoodItem;
 import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
 import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 

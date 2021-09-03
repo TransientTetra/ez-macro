@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro.fragments;
+package com.transienttetra.ezmacro.ui.fragments;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewAnimator;
 import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;
@@ -25,11 +24,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.transienttetra.ezmacro.FoodItemAdapter;
-import com.transienttetra.ezmacro.HomeFragmentViewModel;
+import com.transienttetra.ezmacro.ui.adapters.FoodItemAdapter;
+import com.transienttetra.ezmacro.viewmodels.HomeFragmentViewModel;
 import com.transienttetra.ezmacro.R;
-import com.transienttetra.ezmacro.activities.AddEditFoodItemActivity;
-import com.transienttetra.ezmacro.activities.AddFoodItemToDayLogActivity;
+import com.transienttetra.ezmacro.ui.activities.AddFoodItemToDayLogActivity;
 import com.transienttetra.ezmacro.entities.DayLog;
 import com.transienttetra.ezmacro.entities.FoodItem;
 import com.transienttetra.ezmacro.entities.Nutrition;

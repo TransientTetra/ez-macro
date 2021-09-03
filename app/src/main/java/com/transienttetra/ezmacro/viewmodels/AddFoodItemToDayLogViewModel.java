@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.viewmodels;
 
 import android.app.Application;
 
@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.transienttetra.ezmacro.repositories.DayLogRepository;
+import com.transienttetra.ezmacro.repositories.FoodItemRepository;
 import com.transienttetra.ezmacro.entities.DayLog;
 import com.transienttetra.ezmacro.entities.FoodItem;
 import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;

@@ -10,14 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EzMacro">
         <activity
-            android:name=".activities.AddFoodItemToDayLogActivity"
+            android:name=".ui.activities.AddFoodItemToDayLogActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.AddEditFoodItemActivity"
+            android:name=".ui.activities.AddEditFoodItemActivity"
             android:exported="true"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName=".ui.activities.MainActivity" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

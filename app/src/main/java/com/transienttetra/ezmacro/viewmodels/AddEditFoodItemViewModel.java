@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.viewmodels;
 
 import android.app.Application;
 
@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.transienttetra.ezmacro.repositories.FoodItemRepository;
 import com.transienttetra.ezmacro.entities.FoodItem;
 
 public class AddEditFoodItemViewModel extends AndroidViewModel

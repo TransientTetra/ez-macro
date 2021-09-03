@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.util;
 
 import android.os.Build;
 

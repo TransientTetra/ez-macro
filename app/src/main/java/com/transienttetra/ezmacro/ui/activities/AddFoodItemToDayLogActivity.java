@@ -1,6 +1,5 @@
-package com.transienttetra.ezmacro.activities;
+package com.transienttetra.ezmacro.ui.activities;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -8,33 +7,25 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.transienttetra.ezmacro.AddFoodItemToDayLogViewModel;
-import com.transienttetra.ezmacro.FoodDbFragmentViewModel;
-import com.transienttetra.ezmacro.FoodItemAdapter;
+import com.transienttetra.ezmacro.viewmodels.AddFoodItemToDayLogViewModel;
+import com.transienttetra.ezmacro.ui.adapters.FoodItemAdapter;
 import com.transienttetra.ezmacro.R;
-import com.transienttetra.ezmacro.WeightDialog;
+import com.transienttetra.ezmacro.ui.dialogs.WeightDialog;
 import com.transienttetra.ezmacro.entities.DayLog;
 import com.transienttetra.ezmacro.entities.FoodItem;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class AddFoodItemToDayLogActivity extends AppCompatActivity
 {
-	public static final String EXTRA_DAY_LOG_ID = "com.transienttetra.ezmacro.activities.EXTRA_DAY_LOG_ID";
+	public static final String EXTRA_DAY_LOG_ID = "com.transienttetra.ezmacro.ui.activities.EXTRA_DAY_LOG_ID";
 
 	private AddFoodItemToDayLogViewModel viewModel;
 

@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro.fragments;
+package com.transienttetra.ezmacro.ui.fragments;
 
 
 import android.content.Intent;
@@ -20,10 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.transienttetra.ezmacro.FoodDbFragmentViewModel;
-import com.transienttetra.ezmacro.FoodItemAdapter;
+import com.transienttetra.ezmacro.viewmodels.FoodDbFragmentViewModel;
+import com.transienttetra.ezmacro.ui.adapters.FoodItemAdapter;
 import com.transienttetra.ezmacro.R;
-import com.transienttetra.ezmacro.activities.AddEditFoodItemActivity;
+import com.transienttetra.ezmacro.ui.activities.AddEditFoodItemActivity;
 import com.transienttetra.ezmacro.entities.FoodItem;
 
 import java.util.List;

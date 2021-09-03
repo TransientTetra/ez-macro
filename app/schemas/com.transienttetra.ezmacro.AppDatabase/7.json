@@ -1,0 +1,179 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 7,
+    "identityHash": "ce42e0e6018f489239bc895156e26fdc",
+    "entities": [
+      {
+        "tableName": "FoodItem",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`foodItemId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `description` TEXT, `barcode` TEXT, `servings` REAL NOT NULL, `weight` REAL NOT NULL, `isFavorite` INTEGER NOT NULL, `energy` REAL, `protein` REAL, `fats` REAL, `carbohydrates` REAL)",
+        "fields": [
+          {
+            "fieldPath": "foodItemId",
+            "columnName": "foodItemId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "barcode",
+            "columnName": "barcode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "servings",
+            "columnName": "servings",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weight",
+            "columnName": "weight",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "isFavorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nutrition.energy",
+            "columnName": "energy",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nutrition.protein",
+            "columnName": "protein",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nutrition.fats",
+            "columnName": "fats",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nutrition.carbohydrates",
+            "columnName": "carbohydrates",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "foodItemId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "DayLog",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`dayLogDate` TEXT NOT NULL, PRIMARY KEY(`dayLogDate`))",
+        "fields": [
+          {
+            "fieldPath": "dayLogDate",
+            "columnName": "dayLogDate",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "dayLogDate"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "DayLogFoodItemCrossRef",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`dayLogDate` TEXT NOT NULL, `foodItemId` INTEGER NOT NULL, `weight` REAL NOT NULL, PRIMARY KEY(`dayLogDate`, `foodItemId`), FOREIGN KEY(`dayLogDate`) REFERENCES `DayLog`(`dayLogDate`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`foodItemId`) REFERENCES `FoodItem`(`foodItemId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "dayLogDate",
+            "columnName": "dayLogDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "foodItemId",
+            "columnName": "foodItemId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weight",
+            "columnName": "weight",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "dayLogDate",
+            "foodItemId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_DayLogFoodItemCrossRef_foodItemId",
+            "unique": false,
+            "columnNames": [
+              "foodItemId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_DayLogFoodItemCrossRef_foodItemId` ON `${TABLE_NAME}` (`foodItemId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "DayLog",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "dayLogDate"
+            ],
+            "referencedColumns": [
+              "dayLogDate"
+            ]
+          },
+          {
+            "table": "FoodItem",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "foodItemId"
+            ],
+            "referencedColumns": [
+              "foodItemId"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ce42e0e6018f489239bc895156e26fdc')"
+    ]
+  }
+}

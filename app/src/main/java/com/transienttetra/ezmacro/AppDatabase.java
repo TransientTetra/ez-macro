@@ -7,9 +7,12 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.transienttetra.ezmacro.daos.DayLogDao;
+import com.transienttetra.ezmacro.daos.FoodItemDao;
 import com.transienttetra.ezmacro.entities.DayLog;
 import com.transienttetra.ezmacro.entities.FoodItem;
 import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
+import com.transienttetra.ezmacro.util.DateConverter;
 
 @Database(entities = {FoodItem.class, DayLog.class, DayLogFoodItemCrossRef.class}, version = 7)
 @TypeConverters({DateConverter.class})

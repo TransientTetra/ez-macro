@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro.activities;
+package com.transienttetra.ezmacro.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 
-import com.transienttetra.ezmacro.AddEditFoodItemViewModel;
+import com.transienttetra.ezmacro.viewmodels.AddEditFoodItemViewModel;
 import com.transienttetra.ezmacro.R;
 import com.transienttetra.ezmacro.entities.Nutrition;
 import com.transienttetra.ezmacro.entities.FoodItem;
@@ -21,7 +21,7 @@ import com.transienttetra.ezmacro.util.EnergyConverter;
 
 public class AddEditFoodItemActivity extends AppCompatActivity
 {
-	public static final String EXTRA_ID = "com.transienttetra.ezmacro.activities.EXTRA_ID";
+	public static final String EXTRA_ID = "com.transienttetra.ezmacro.ui.activities.EXTRA_ID";
 
 	private EditText nameTextInput;
 	private EditText descriptionTextInput;

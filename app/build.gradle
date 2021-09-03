@@ -6,13 +6,19 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.example.ezmacro"
+        applicationId "com.transienttetra.ezmacro"
         minSdk 26
         targetSdk 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {

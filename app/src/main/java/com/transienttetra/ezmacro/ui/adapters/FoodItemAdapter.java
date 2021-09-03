@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.ui.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.transienttetra.ezmacro.R;
 import com.transienttetra.ezmacro.entities.FoodItem;
 
 public class FoodItemAdapter extends ListAdapter<FoodItem, FoodItemAdapter.ViewHolder>

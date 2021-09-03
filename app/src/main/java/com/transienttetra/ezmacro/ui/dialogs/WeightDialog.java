@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.ui.dialogs;
 
 import android.content.Context;
 import android.text.InputType;
@@ -7,10 +7,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.transienttetra.ezmacro.activities.AddFoodItemToDayLogActivity;
-import com.transienttetra.ezmacro.entities.DayLog;
-
-import java.time.LocalDate;
+import com.transienttetra.ezmacro.R;
 
 public class WeightDialog
 {

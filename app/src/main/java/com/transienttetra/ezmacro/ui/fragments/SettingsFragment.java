@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro.fragments;
+package com.transienttetra.ezmacro.ui.fragments;
 
 
 import android.os.Bundle;

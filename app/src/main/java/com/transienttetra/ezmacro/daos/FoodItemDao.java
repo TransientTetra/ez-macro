@@ -1,4 +1,4 @@
-package com.transienttetra.ezmacro;
+package com.transienttetra.ezmacro.daos;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
