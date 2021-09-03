@@ -54,12 +54,9 @@ public class HomeFragment extends Fragment
 	private Button chooseDateButton;
 	private DatePickerDialog datePickerDialog;
 
-	private HomeFragmentViewModel homeFragmentViewModel;
-	private Nutrition goal;
+	private HomeFragmentViewModel viewModel;
 	private FoodItemAdapter foodItemAdapter;
 	private ViewSwitcher viewSwitcher;
-
-	private LocalDate currentDate;
 
 	@Nullable
 	@Override
@@ -82,18 +79,19 @@ public class HomeFragment extends Fragment
 		chooseDateButton = getView().findViewById(R.id.chooseDateButton);
 		viewSwitcher = getView().findViewById(R.id.viewSwitcher);
 
-		currentDate = LocalDate.now();
+		viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(HomeFragmentViewModel.class);
 
 		DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
 		{
 			@Override
 			public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
 			{
-				currentDate = LocalDate.of(year, month, dayOfMonth);
+				viewModel.setCurrentDayLog(new DayLog(LocalDate.of(year, month, dayOfMonth)));
 				updateDayLog();
 			}
 		};
 
+		LocalDate currentDate = viewModel.getCurrentDayLog().getDayLogDate();
 		datePickerDialog = new DatePickerDialog(getActivity(), dateSetListener, currentDate.getYear(),
 			currentDate.getMonthValue(), currentDate.getDayOfMonth());
 
@@ -106,9 +104,6 @@ public class HomeFragment extends Fragment
 			}
 		});
 
-		// todo temporary
-		goal = new Nutrition(EnergyConverter.kcalToJoule(3000), 200, 90, 250);
-
 		FloatingActionButton addFoodItemButton = getView().findViewById(R.id.addFoodItemButton);
 		addFoodItemButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -116,7 +111,7 @@ public class HomeFragment extends Fragment
 			public void onClick(View v)
 			{
 				Intent intent = new Intent(getActivity(), AddFoodItemToDayLogActivity.class);
-				intent.putExtra(AddFoodItemToDayLogActivity.EXTRA_DAY_LOG_ID, currentDate);
+				intent.putExtra(AddFoodItemToDayLogActivity.EXTRA_DAY_LOG_ID, viewModel.getCurrentDayLog().getDayLogDate());
 				startActivity(intent);
 			}
 		});
@@ -127,7 +122,6 @@ public class HomeFragment extends Fragment
 		foodItemsView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		foodItemsView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-		homeFragmentViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(HomeFragmentViewModel.class);
 		updateDayLog();
 
 		new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
@@ -143,7 +137,7 @@ public class HomeFragment extends Fragment
 			{
 				FoodItem toDelete = foodItemAdapter.getFoodItemAt(viewHolder.getAdapterPosition());
 				String foodName = toDelete.getName();
-				homeFragmentViewModel.detach(new DayLog(currentDate), toDelete);
+				viewModel.detach(viewModel.getCurrentDayLog(), toDelete);
 				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.food_item_detached), Toast.LENGTH_SHORT).show();
 			}
 		}).attachToRecyclerView(foodItemsView);
@@ -162,8 +156,9 @@ public class HomeFragment extends Fragment
 
 	private void updateDayLog()
 	{
+		LocalDate currentDate = viewModel.getCurrentDayLog().getDayLogDate();
 		chooseDateButton.setText(currentDate.toString());
-		homeFragmentViewModel.getDayLog(currentDate).observe(this, new Observer<DayLogWithFoodItems>()
+		viewModel.getDayLog(currentDate).observe(this, new Observer<DayLogWithFoodItems>()
 		{
 			@Override
 			public void onChanged(DayLogWithFoodItems dayLog)
@@ -181,7 +176,7 @@ public class HomeFragment extends Fragment
 				{
 					progress.add(foodItem.getNutrition());
 				}
-				setProgress(goal, progress);
+				setProgress(viewModel.getGoal(), progress);
 				foodItemAdapter.submitList(foodItemList);
 			}
 		});
