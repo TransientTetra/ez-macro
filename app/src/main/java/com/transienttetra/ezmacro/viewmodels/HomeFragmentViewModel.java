@@ -4,7 +4,8 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 
 import com.transienttetra.ezmacro.entities.Nutrition;
 import com.transienttetra.ezmacro.repositories.DayLogRepository;
@@ -20,16 +21,40 @@ public class HomeFragmentViewModel extends AndroidViewModel
 {
 	private DayLogRepository repository;
 	private Nutrition goal;
-	private DayLog current;
+	private OnDateChangedListener listener;
+	private LocalDate currentDate;
+
+	public interface OnDateChangedListener
+	{
+		void onDateChanged(DayLogWithFoodItems dayLog);
+	}
 
 	public HomeFragmentViewModel(@NonNull Application application)
 	{
 		super(application);
 		repository = new DayLogRepository(application);
-		current = new DayLog(LocalDate.now());
+		currentDate = LocalDate.now();
 
 		// todo temporary
 		goal = new Nutrition(EnergyConverter.kcalToJoule(3000), 200, 90, 250);
+	}
+
+	public void notifyDateChanged(LocalDate date, LifecycleOwner lifecycleOwner)
+	{
+		currentDate = date;
+		repository.get(date).observe(lifecycleOwner, new Observer<DayLogWithFoodItems>()
+		{
+			@Override
+			public void onChanged(DayLogWithFoodItems dayLogWithFoodItems)
+			{
+				listener.onDateChanged(dayLogWithFoodItems);
+			}
+		});
+	}
+
+	public void setListener(OnDateChangedListener listener)
+	{
+		this.listener = listener;
 	}
 
 	public void insert(DayLog dayLog)
@@ -42,11 +67,9 @@ public class HomeFragmentViewModel extends AndroidViewModel
 		repository.delete(new DayLogFoodItemCrossRef(daylog.getDayLogDate(), foodItem.getFoodItemId()));
 	}
 
-	public LiveData<DayLogWithFoodItems> getDayLog(LocalDate date)
+	public void detach(FoodItem foodItem)
 	{
-		// don't like this
-		repository.insert(new DayLog(date));
-		return repository.get(date);
+		detach(new DayLog(currentDate), foodItem);
 	}
 
 	public Nutrition getGoal()
@@ -59,13 +82,8 @@ public class HomeFragmentViewModel extends AndroidViewModel
 		this.goal = goal;
 	}
 
-	public DayLog getCurrentDayLog()
+	public LocalDate getCurrentDate()
 	{
-		return current;
-	}
-
-	public void setCurrentDayLog(DayLog current)
-	{
-		this.current = current;
+		return currentDate;
 	}
 }

@@ -22,7 +22,7 @@ import java.util.List;
 public interface DayLogDao
 {
 	@Transaction
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	@Insert(onConflict = OnConflictStrategy.IGNORE)
 	void insert(DayLog dayLog);
 
 	@Transaction

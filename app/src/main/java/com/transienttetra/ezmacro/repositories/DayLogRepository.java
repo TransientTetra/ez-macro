@@ -53,6 +53,8 @@ public class DayLogRepository
 
 	public LiveData<DayLogWithFoodItems> get(LocalDate date)
 	{
+		// don't like this
+		insert(new DayLog(date));
 		return dayLogDao.get(date);
 	}
 

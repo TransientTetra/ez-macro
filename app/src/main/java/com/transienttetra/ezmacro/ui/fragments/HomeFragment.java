@@ -16,7 +16,6 @@ import android.widget.ViewSwitcher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -28,11 +27,9 @@ import com.transienttetra.ezmacro.ui.adapters.FoodItemAdapter;
 import com.transienttetra.ezmacro.viewmodels.HomeFragmentViewModel;
 import com.transienttetra.ezmacro.R;
 import com.transienttetra.ezmacro.ui.activities.AddFoodItemToDayLogActivity;
-import com.transienttetra.ezmacro.entities.DayLog;
 import com.transienttetra.ezmacro.entities.FoodItem;
 import com.transienttetra.ezmacro.entities.Nutrition;
 import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
-import com.transienttetra.ezmacro.util.EnergyConverter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -80,89 +77,12 @@ public class HomeFragment extends Fragment
 		viewSwitcher = getView().findViewById(R.id.viewSwitcher);
 
 		viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(HomeFragmentViewModel.class);
-
-		DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
+		viewModel.setListener(new HomeFragmentViewModel.OnDateChangedListener()
 		{
 			@Override
-			public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+			public void onDateChanged(DayLogWithFoodItems dayLog)
 			{
-				viewModel.setCurrentDayLog(new DayLog(LocalDate.of(year, month, dayOfMonth)));
-				updateDayLog();
-			}
-		};
-
-		LocalDate currentDate = viewModel.getCurrentDayLog().getDayLogDate();
-		datePickerDialog = new DatePickerDialog(getActivity(), dateSetListener, currentDate.getYear(),
-			currentDate.getMonthValue(), currentDate.getDayOfMonth());
-
-		chooseDateButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				datePickerDialog.show();
-			}
-		});
-
-		FloatingActionButton addFoodItemButton = getView().findViewById(R.id.addFoodItemButton);
-		addFoodItemButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(getActivity(), AddFoodItemToDayLogActivity.class);
-				intent.putExtra(AddFoodItemToDayLogActivity.EXTRA_DAY_LOG_ID, viewModel.getCurrentDayLog().getDayLogDate());
-				startActivity(intent);
-			}
-		});
-
-		RecyclerView foodItemsView = getView().findViewById(R.id.foodItemsView);
-		foodItemAdapter = new FoodItemAdapter();
-		foodItemsView.setAdapter(foodItemAdapter);
-		foodItemsView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		foodItemsView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
-		updateDayLog();
-
-		new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
-		{
-			@Override
-			public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target)
-			{
-				return false;
-			}
-
-			@Override
-			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
-			{
-				FoodItem toDelete = foodItemAdapter.getFoodItemAt(viewHolder.getAdapterPosition());
-				String foodName = toDelete.getName();
-				viewModel.detach(viewModel.getCurrentDayLog(), toDelete);
-				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.food_item_detached), Toast.LENGTH_SHORT).show();
-			}
-		}).attachToRecyclerView(foodItemsView);
-
-		foodItemAdapter.setOnItemClickListener(new FoodItemAdapter.OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(FoodItem foodItem)
-			{
-//				Intent intent = new Intent(getActivity(), AddEditFoodItemActivity.class);
-//				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getFoodItemId());
-//				startActivity(intent);
-			}
-		});
-	}
-
-	private void updateDayLog()
-	{
-		LocalDate currentDate = viewModel.getCurrentDayLog().getDayLogDate();
-		chooseDateButton.setText(currentDate.toString());
-		viewModel.getDayLog(currentDate).observe(this, new Observer<DayLogWithFoodItems>()
-		{
-			@Override
-			public void onChanged(DayLogWithFoodItems dayLog)
-			{
+				chooseDateButton.setText(dayLog.getDayLog().getDayLogDate().toString());
 				Nutrition progress = new Nutrition();
 				List<FoodItem> foodItemList = dayLog.getFoodItemList();
 				if (foodItemList.size() > 0)
@@ -180,6 +100,75 @@ public class HomeFragment extends Fragment
 				foodItemAdapter.submitList(foodItemList);
 			}
 		});
+
+		DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
+		{
+			@Override
+			public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+			{
+				viewModel.notifyDateChanged(LocalDate.of(year, month, dayOfMonth), HomeFragment.this);
+			}
+		};
+		datePickerDialog = new DatePickerDialog(getActivity(), dateSetListener, viewModel.getCurrentDate().getYear(),
+			viewModel.getCurrentDate().getMonthValue(), viewModel.getCurrentDate().getDayOfMonth());
+
+		chooseDateButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				datePickerDialog.show();
+			}
+		});
+
+		FloatingActionButton addFoodItemButton = getView().findViewById(R.id.addFoodItemButton);
+		addFoodItemButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getActivity(), AddFoodItemToDayLogActivity.class);
+				intent.putExtra(AddFoodItemToDayLogActivity.EXTRA_DAY_LOG_ID, viewModel.getCurrentDate());
+				startActivity(intent);
+			}
+		});
+
+		RecyclerView foodItemsView = getView().findViewById(R.id.foodItemsView);
+		foodItemAdapter = new FoodItemAdapter();
+		foodItemsView.setAdapter(foodItemAdapter);
+		foodItemsView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		foodItemsView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
+		new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
+		{
+			@Override
+			public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target)
+			{
+				return false;
+			}
+
+			@Override
+			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
+			{
+				FoodItem toDelete = foodItemAdapter.getFoodItemAt(viewHolder.getAdapterPosition());
+				String foodName = toDelete.getName();
+				viewModel.detach(toDelete);
+				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.food_item_detached), Toast.LENGTH_SHORT).show();
+			}
+		}).attachToRecyclerView(foodItemsView);
+
+		foodItemAdapter.setOnItemClickListener(new FoodItemAdapter.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(FoodItem foodItem)
+			{
+//				Intent intent = new Intent(getActivity(), AddEditFoodItemActivity.class);
+//				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getFoodItemId());
+//				startActivity(intent);
+			}
+		});
+
+		viewModel.notifyDateChanged(viewModel.getCurrentDate(), HomeFragment.this);
 	}
 
 	private void setProgress(Nutrition target, Nutrition current)
