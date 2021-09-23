@@ -12,6 +12,7 @@ import androidx.room.Update;
 
 import com.transienttetra.ezmacro.entities.DayLog;
 import com.transienttetra.ezmacro.entities.FoodItem;
+import com.transienttetra.ezmacro.entities.LoggedFoodItem;
 import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
 import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 
@@ -44,6 +45,10 @@ public interface DayLogDao
 	@Transaction
 	@Query("SELECT * FROM DayLog WHERE dayLogDate = :dayLogDate")
 	LiveData<DayLogWithFoodItems> get(LocalDate dayLogDate);
+
+	@Transaction
+	@Query("SELECT DayLogFoodItemCrossRef.loggedWeight, FoodItem.* FROM DayLogFoodItemCrossRef INNER JOIN FoodItem ON DayLogFoodItemCrossRef.foodItemId = FoodItem.foodItemId WHERE DayLogFoodItemCrossRef.dayLogDate = :dayLogDate")
+	LiveData<List<LoggedFoodItem>> getLoggedFoodItems(LocalDate dayLogDate);
 
 	@Transaction
 	@Insert(onConflict = OnConflictStrategy.REPLACE)

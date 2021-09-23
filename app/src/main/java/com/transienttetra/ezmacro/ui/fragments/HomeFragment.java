@@ -23,7 +23,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.transienttetra.ezmacro.entities.LoggedFoodItem;
 import com.transienttetra.ezmacro.ui.adapters.FoodItemAdapter;
+import com.transienttetra.ezmacro.ui.adapters.LoggedFoodItemAdapter;
 import com.transienttetra.ezmacro.viewmodels.HomeFragmentViewModel;
 import com.transienttetra.ezmacro.R;
 import com.transienttetra.ezmacro.ui.activities.AddFoodItemToDayLogActivity;
@@ -52,7 +54,7 @@ public class HomeFragment extends Fragment
 	private DatePickerDialog datePickerDialog;
 
 	private HomeFragmentViewModel viewModel;
-	private FoodItemAdapter foodItemAdapter;
+	private LoggedFoodItemAdapter loggedFoodItemAdapter;
 	private ViewSwitcher viewSwitcher;
 
 	@Nullable
@@ -80,24 +82,18 @@ public class HomeFragment extends Fragment
 		viewModel.setListener(new HomeFragmentViewModel.OnDateChangedListener()
 		{
 			@Override
-			public void onDateChanged(DayLogWithFoodItems dayLog)
+			public void onDateChanged(List<LoggedFoodItem> loggedFoodItemList)
 			{
-				chooseDateButton.setText(dayLog.getDayLog().getDayLogDate().toString());
-				Nutrition progress = new Nutrition();
-				List<FoodItem> foodItemList = dayLog.getFoodItemList();
-				if (foodItemList.size() > 0)
+				if (loggedFoodItemList.size() > 0)
 				{
 					if (viewSwitcher.getNextView().getId() == R.id.foodItemsView)
 						viewSwitcher.showNext();
 				}
 				else if (viewSwitcher.getNextView().getId() == R.id.emptyText)
 					viewSwitcher.showNext();
-				for (FoodItem foodItem : foodItemList)
-				{
-					progress.add(foodItem.getNutrition());
-				}
-				setProgress(viewModel.getGoal(), progress);
-				foodItemAdapter.submitList(foodItemList);
+
+				setProgress(viewModel.getGoal(), viewModel.getProgress());
+				loggedFoodItemAdapter.submitList(loggedFoodItemList);
 			}
 		});
 
@@ -106,6 +102,7 @@ public class HomeFragment extends Fragment
 			@Override
 			public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
 			{
+				chooseDateButton.setText(LocalDate.of(year, month, dayOfMonth).toString());
 				viewModel.notifyDateChanged(LocalDate.of(year, month, dayOfMonth), HomeFragment.this);
 			}
 		};
@@ -134,8 +131,8 @@ public class HomeFragment extends Fragment
 		});
 
 		RecyclerView foodItemsView = getView().findViewById(R.id.foodItemsView);
-		foodItemAdapter = new FoodItemAdapter();
-		foodItemsView.setAdapter(foodItemAdapter);
+		loggedFoodItemAdapter = new LoggedFoodItemAdapter();
+		foodItemsView.setAdapter(loggedFoodItemAdapter);
 		foodItemsView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		foodItemsView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
@@ -150,17 +147,17 @@ public class HomeFragment extends Fragment
 			@Override
 			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
 			{
-				FoodItem toDelete = foodItemAdapter.getFoodItemAt(viewHolder.getAdapterPosition());
+				FoodItem toDelete = loggedFoodItemAdapter.getLoggedFoodItemAt(viewHolder.getAdapterPosition()).getFoodItem();
 				String foodName = toDelete.getName();
 				viewModel.detach(toDelete);
-				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.food_item_detached), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.food_item_detached) + foodName, Toast.LENGTH_SHORT).show();
 			}
 		}).attachToRecyclerView(foodItemsView);
 
-		foodItemAdapter.setOnItemClickListener(new FoodItemAdapter.OnItemClickListener()
+		loggedFoodItemAdapter.setOnItemClickListener(new LoggedFoodItemAdapter.OnItemClickListener()
 		{
 			@Override
-			public void onItemClick(FoodItem foodItem)
+			public void onItemClick(LoggedFoodItem loggedFoodItem)
 			{
 //				Intent intent = new Intent(getActivity(), AddEditFoodItemActivity.class);
 //				intent.putExtra(AddEditFoodItemActivity.EXTRA_ID, foodItem.getFoodItemId());
@@ -168,6 +165,7 @@ public class HomeFragment extends Fragment
 			}
 		});
 
+		chooseDateButton.setText(viewModel.getCurrentDate().toString());
 		viewModel.notifyDateChanged(viewModel.getCurrentDate(), HomeFragment.this);
 	}
 

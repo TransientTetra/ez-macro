@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
+import com.transienttetra.ezmacro.R;
+import com.transienttetra.ezmacro.entities.LoggedFoodItem;
 import com.transienttetra.ezmacro.entities.Nutrition;
 import com.transienttetra.ezmacro.repositories.DayLogRepository;
 import com.transienttetra.ezmacro.entities.DayLog;
@@ -16,17 +18,19 @@ import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 import com.transienttetra.ezmacro.util.EnergyConverter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class HomeFragmentViewModel extends AndroidViewModel
 {
 	private DayLogRepository repository;
 	private Nutrition goal;
+	private Nutrition progress;
 	private OnDateChangedListener listener;
 	private LocalDate currentDate;
 
 	public interface OnDateChangedListener
 	{
-		void onDateChanged(DayLogWithFoodItems dayLog);
+		void onDateChanged(List<LoggedFoodItem> foodItemList);
 	}
 
 	public HomeFragmentViewModel(@NonNull Application application)
@@ -42,14 +46,25 @@ public class HomeFragmentViewModel extends AndroidViewModel
 	public void notifyDateChanged(LocalDate date, LifecycleOwner lifecycleOwner)
 	{
 		currentDate = date;
-		repository.get(date).observe(lifecycleOwner, new Observer<DayLogWithFoodItems>()
+		repository.insert(new DayLog(date));
+		repository.getLoggedFoodItems(date).observe(lifecycleOwner, new Observer<List<LoggedFoodItem>>()
 		{
 			@Override
-			public void onChanged(DayLogWithFoodItems dayLogWithFoodItems)
+			public void onChanged(List<LoggedFoodItem> loggedFoodItems)
 			{
-				listener.onDateChanged(dayLogWithFoodItems);
+				updateProgress(loggedFoodItems);
+				listener.onDateChanged(loggedFoodItems);
 			}
 		});
+	}
+
+	private void updateProgress(List<LoggedFoodItem> loggedFoodItems)
+	{
+		progress = new Nutrition();
+		for (LoggedFoodItem foodItem : loggedFoodItems)
+		{
+			progress.add(foodItem.getNutrition());
+		}
 	}
 
 	public void setListener(OnDateChangedListener listener)
@@ -80,6 +95,16 @@ public class HomeFragmentViewModel extends AndroidViewModel
 	public void setGoal(Nutrition goal)
 	{
 		this.goal = goal;
+	}
+
+	public Nutrition getProgress()
+	{
+		return progress;
+	}
+
+	public void setProgress(Nutrition progress)
+	{
+		this.progress = progress;
 	}
 
 	public LocalDate getCurrentDate()

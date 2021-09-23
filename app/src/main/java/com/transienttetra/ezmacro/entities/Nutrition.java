@@ -97,11 +97,21 @@ public class Nutrition
 	 * Adds the nutritional value from other to this in place, modifying the object
 	 * @param other the nutrition added to this one
 	 */
-	public void add(Nutrition other)
+	public Nutrition add(Nutrition other)
 	{
 		this.energy += other.getEnergy();
 		this.protein += other.getProtein();
 		this.fats += other.getFats();
 		this.carbohydrates += other.getCarbohydrates();
+		return this;
+	}
+
+	public Nutrition multiply(float n)
+	{
+		energy *= n;
+		protein *= n;
+		fats *= n;
+		carbohydrates *= n;
+		return this;
 	}
 }

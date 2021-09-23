@@ -42,7 +42,7 @@ public class EnergyConverter
 
 	/**
 	 * Converts energy given in food kcal to joules
-	 * @param kcal energy in joules
+	 * @param kcal energy in kcal
 	 * @return energy in joules
 	 */
 	public static float kcalToJoule(float kcal)

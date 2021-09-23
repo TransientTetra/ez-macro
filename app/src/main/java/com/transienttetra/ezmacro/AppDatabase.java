@@ -14,7 +14,7 @@ import com.transienttetra.ezmacro.entities.FoodItem;
 import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
 import com.transienttetra.ezmacro.util.DateConverter;
 
-@Database(entities = {FoodItem.class, DayLog.class, DayLogFoodItemCrossRef.class}, version = 9)
+@Database(entities = {FoodItem.class, DayLog.class, DayLogFoodItemCrossRef.class}, version = 12)
 @TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase
 {

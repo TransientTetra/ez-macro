@@ -33,7 +33,7 @@ public class FoodItem
 	private String description;
 
 	/**
-	 * The {@link Nutrition} value of the food item
+	 * The {@link Nutrition} value of the food item per 100g
 	 */
 	@Embedded
 	private Nutrition nutrition;

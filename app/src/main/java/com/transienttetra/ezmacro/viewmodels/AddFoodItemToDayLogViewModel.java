@@ -39,7 +39,7 @@ public class AddFoodItemToDayLogViewModel extends AndroidViewModel
 	public void attach(DayLog dayLog, FoodItem foodItem, float weight)
 	{
 		DayLogFoodItemCrossRef temp = new DayLogFoodItemCrossRef(dayLog.getDayLogDate(), foodItem.getFoodItemId());
-		temp.setWeight(weight);
+		temp.setLoggedWeight(weight);
 		dayLogRepository.insert(temp);
 	}
 }

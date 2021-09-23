@@ -14,28 +14,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.transienttetra.ezmacro.R;
 import com.transienttetra.ezmacro.entities.FoodItem;
+import com.transienttetra.ezmacro.entities.LoggedFoodItem;
 import com.transienttetra.ezmacro.entities.Nutrition;
 import com.transienttetra.ezmacro.util.EnergyConverter;
+import com.transienttetra.ezmacro.viewmodels.HomeFragmentViewModel;
 
-public class FoodItemAdapter extends ListAdapter<FoodItem, FoodItemAdapter.ViewHolder>
+public class LoggedFoodItemAdapter extends ListAdapter<LoggedFoodItem, LoggedFoodItemAdapter.ViewHolder>
 {
 	private OnItemClickListener listener;
-	private static final DiffUtil.ItemCallback<FoodItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<FoodItem>()
+	private static final DiffUtil.ItemCallback<LoggedFoodItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<LoggedFoodItem>()
 	{
 		@Override
-		public boolean areItemsTheSame(@NonNull FoodItem oldItem, @NonNull FoodItem newItem)
+		public boolean areItemsTheSame(@NonNull LoggedFoodItem oldItem, @NonNull LoggedFoodItem newItem)
 		{
-			return oldItem.getFoodItemId() == newItem.getFoodItemId();
+			return oldItem.getFoodItem().equals(newItem.getFoodItem()) && oldItem.getLoggedWeight() == newItem.getLoggedWeight();
 		}
 
 		@Override
-		public boolean areContentsTheSame(@NonNull FoodItem oldItem, @NonNull FoodItem newItem)
+		public boolean areContentsTheSame(@NonNull LoggedFoodItem oldItem, @NonNull LoggedFoodItem newItem)
 		{
-			return oldItem.equals(newItem);
+			return oldItem.getFoodItem().equals(newItem.getFoodItem());
 		}
 	};
 
-	public FoodItemAdapter()
+	public LoggedFoodItemAdapter()
 	{
 		super(DIFF_CALLBACK);
 	}
@@ -47,17 +49,16 @@ public class FoodItemAdapter extends ListAdapter<FoodItem, FoodItemAdapter.ViewH
 		Context context = parent.getContext();
 		LayoutInflater layoutInflater = LayoutInflater.from(context);
 
-		View view = layoutInflater.inflate(R.layout.food_item, parent, false);
+		View view = layoutInflater.inflate(R.layout.logged_food_item, parent, false);
 
-		ViewHolder viewHolder = new ViewHolder(view);
-		return viewHolder;
+		return new ViewHolder(view);
 	}
 
 	@SuppressLint("DefaultLocale")
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position)
 	{
-		FoodItem foodItem = getItem(position);
+		FoodItem foodItem = getItem(position).getFoodItem();
 
 		holder.foodName.setText(foodItem.getName());
 		Nutrition nutrition = foodItem.getNutrition();
@@ -66,11 +67,12 @@ public class FoodItemAdapter extends ListAdapter<FoodItem, FoodItemAdapter.ViewH
 		holder.protein.setText(String.format("%1.1f p", nutrition.getProtein()));
 		holder.fat.setText(String.format("%1.1f f", nutrition.getFats()));
 		holder.carb.setText(String.format("%1.1f c", nutrition.getCarbohydrates()));
+		holder.weight.setText(String.format("%1.1f g", getItem(position).getLoggedWeight()));
 	}
 
-	public FoodItem getFoodItemAt(int position)
+	public LoggedFoodItem getLoggedFoodItemAt(int adapterPosition)
 	{
-		return getItem(position);
+		return getItem(adapterPosition);
 	}
 
 	public class ViewHolder extends RecyclerView.ViewHolder
@@ -80,6 +82,7 @@ public class FoodItemAdapter extends ListAdapter<FoodItem, FoodItemAdapter.ViewH
 		public TextView protein;
 		public TextView fat;
 		public TextView carb;
+		public TextView weight;
 
 		public ViewHolder(@NonNull View itemView)
 		{
@@ -89,6 +92,7 @@ public class FoodItemAdapter extends ListAdapter<FoodItem, FoodItemAdapter.ViewH
 			protein = itemView.findViewById(R.id.proteinText);
 			fat = itemView.findViewById(R.id.fatText);
 			carb = itemView.findViewById(R.id.carbText);
+			weight = itemView.findViewById(R.id.weightText);
 
 			itemView.setOnClickListener(new View.OnClickListener()
 			{
@@ -105,7 +109,7 @@ public class FoodItemAdapter extends ListAdapter<FoodItem, FoodItemAdapter.ViewH
 
 	public interface OnItemClickListener
 	{
-		void onItemClick(FoodItem foodItem);
+		void onItemClick(LoggedFoodItem foodItem);
 	}
 
 	public void setOnItemClickListener(OnItemClickListener listener)

@@ -25,15 +25,15 @@ import java.time.LocalDate;
 			childColumns = "foodItemId")})
 public class DayLogFoodItemCrossRef
 {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+	@PrimaryKey(autoGenerate = true)
+	private int id;
 
-    @NonNull
-    private LocalDate dayLogDate;
+	@NonNull
+	private LocalDate dayLogDate;
 
 	private int foodItemId;
 
-	private float weight;
+	private float loggedWeight;
 
 	public DayLogFoodItemCrossRef(@NonNull LocalDate dayLogDate, int foodItemId)
 	{
@@ -71,13 +71,13 @@ public class DayLogFoodItemCrossRef
 		this.foodItemId = foodItemId;
 	}
 
-	public float getWeight()
+	public float getLoggedWeight()
 	{
-		return weight;
+		return loggedWeight;
 	}
 
-	public void setWeight(float weight)
+	public void setLoggedWeight(float loggedWeight)
 	{
-		this.weight = weight;
+		this.loggedWeight = loggedWeight;
 	}
 }

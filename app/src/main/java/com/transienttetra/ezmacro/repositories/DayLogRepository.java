@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import com.transienttetra.ezmacro.AppDatabase;
 import com.transienttetra.ezmacro.daos.DayLogDao;
 import com.transienttetra.ezmacro.entities.DayLog;
+import com.transienttetra.ezmacro.entities.LoggedFoodItem;
 import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
 import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 
@@ -56,6 +57,11 @@ public class DayLogRepository
 		// don't like this
 		insert(new DayLog(date));
 		return dayLogDao.get(date);
+	}
+
+	public LiveData<List<LoggedFoodItem>> getLoggedFoodItems(LocalDate date)
+	{
+		return dayLogDao.getLoggedFoodItems(date);
 	}
 
 	public void insert(DayLogFoodItemCrossRef dayLogFoodItemCrossRef)
