@@ -7,14 +7,12 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
-import com.transienttetra.ezmacro.R;
-import com.transienttetra.ezmacro.entities.LoggedFoodItem;
+import com.transienttetra.ezmacro.relations.LoggedFoodItem;
 import com.transienttetra.ezmacro.entities.Nutrition;
 import com.transienttetra.ezmacro.repositories.DayLogRepository;
 import com.transienttetra.ezmacro.entities.DayLog;
 import com.transienttetra.ezmacro.entities.FoodItem;
 import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
-import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 import com.transienttetra.ezmacro.util.EnergyConverter;
 
 import java.time.LocalDate;

@@ -14,10 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.transienttetra.ezmacro.R;
 import com.transienttetra.ezmacro.entities.FoodItem;
-import com.transienttetra.ezmacro.entities.LoggedFoodItem;
+import com.transienttetra.ezmacro.relations.LoggedFoodItem;
 import com.transienttetra.ezmacro.entities.Nutrition;
 import com.transienttetra.ezmacro.util.EnergyConverter;
-import com.transienttetra.ezmacro.viewmodels.HomeFragmentViewModel;
 
 public class LoggedFoodItemAdapter extends ListAdapter<LoggedFoodItem, LoggedFoodItemAdapter.ViewHolder>
 {

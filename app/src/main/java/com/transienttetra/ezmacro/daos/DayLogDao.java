@@ -1,6 +1,5 @@
 package com.transienttetra.ezmacro.daos;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -11,10 +10,8 @@ import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.transienttetra.ezmacro.entities.DayLog;
-import com.transienttetra.ezmacro.entities.FoodItem;
-import com.transienttetra.ezmacro.entities.LoggedFoodItem;
+import com.transienttetra.ezmacro.relations.LoggedFoodItem;
 import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
-import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,14 +34,6 @@ public interface DayLogDao
 	@Transaction
 	@Query("DELETE FROM DayLog")
 	void deleteAll();
-
-	@Transaction
-	@Query("SELECT * FROM DayLog ORDER BY dayLogDate")
-	LiveData<List<DayLogWithFoodItems>> getAll();
-
-	@Transaction
-	@Query("SELECT * FROM DayLog WHERE dayLogDate = :dayLogDate")
-	LiveData<DayLogWithFoodItems> get(LocalDate dayLogDate);
 
 	@Transaction
 	@Query("SELECT DayLogFoodItemCrossRef.loggedWeight, FoodItem.* FROM DayLogFoodItemCrossRef INNER JOIN FoodItem ON DayLogFoodItemCrossRef.foodItemId = FoodItem.foodItemId WHERE DayLogFoodItemCrossRef.dayLogDate = :dayLogDate")

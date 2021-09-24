@@ -8,9 +8,8 @@ import androidx.lifecycle.LiveData;
 import com.transienttetra.ezmacro.AppDatabase;
 import com.transienttetra.ezmacro.daos.DayLogDao;
 import com.transienttetra.ezmacro.entities.DayLog;
-import com.transienttetra.ezmacro.entities.LoggedFoodItem;
+import com.transienttetra.ezmacro.relations.LoggedFoodItem;
 import com.transienttetra.ezmacro.relations.DayLogFoodItemCrossRef;
-import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,13 +17,11 @@ import java.util.List;
 public class DayLogRepository
 {
 	private DayLogDao dayLogDao;
-	private LiveData<List<DayLogWithFoodItems>> allDayLogs;
 
 	public DayLogRepository(Application application)
 	{
 		AppDatabase database = AppDatabase.getInstance(application);
 		dayLogDao = database.DayLogDao();
-		allDayLogs = dayLogDao.getAll();
 	}
 
 	public void insert(DayLog dayLog)
@@ -45,18 +42,6 @@ public class DayLogRepository
 	public void deleteAll()
 	{
 		new DeleteAllAsyncTask(dayLogDao).execute();
-	}
-
-	public LiveData<List<DayLogWithFoodItems>> getAll()
-	{
-		return allDayLogs;
-	}
-
-	public LiveData<DayLogWithFoodItems> get(LocalDate date)
-	{
-		// don't like this
-		insert(new DayLog(date));
-		return dayLogDao.get(date);
 	}
 
 	public LiveData<List<LoggedFoodItem>> getLoggedFoodItems(LocalDate date)

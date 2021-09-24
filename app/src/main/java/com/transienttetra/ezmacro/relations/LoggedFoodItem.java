@@ -1,7 +1,10 @@
-package com.transienttetra.ezmacro.entities;
+package com.transienttetra.ezmacro.relations;
 
 
 import androidx.room.Embedded;
+
+import com.transienttetra.ezmacro.entities.FoodItem;
+import com.transienttetra.ezmacro.entities.Nutrition;
 
 public class LoggedFoodItem
 {

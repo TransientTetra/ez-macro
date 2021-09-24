@@ -23,15 +23,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.transienttetra.ezmacro.entities.LoggedFoodItem;
-import com.transienttetra.ezmacro.ui.adapters.FoodItemAdapter;
+import com.transienttetra.ezmacro.relations.LoggedFoodItem;
 import com.transienttetra.ezmacro.ui.adapters.LoggedFoodItemAdapter;
 import com.transienttetra.ezmacro.viewmodels.HomeFragmentViewModel;
 import com.transienttetra.ezmacro.R;
 import com.transienttetra.ezmacro.ui.activities.AddFoodItemToDayLogActivity;
 import com.transienttetra.ezmacro.entities.FoodItem;
 import com.transienttetra.ezmacro.entities.Nutrition;
-import com.transienttetra.ezmacro.relations.DayLogWithFoodItems;
 
 import java.time.LocalDate;
 import java.util.List;
