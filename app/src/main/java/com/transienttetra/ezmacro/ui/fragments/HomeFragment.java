@@ -145,9 +145,10 @@ public class HomeFragment extends Fragment
 			@Override
 			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
 			{
-				FoodItem toDelete = loggedFoodItemAdapter.getLoggedFoodItemAt(viewHolder.getAdapterPosition()).getFoodItem();
-				String foodName = toDelete.getName();
+				LoggedFoodItem toDelete = loggedFoodItemAdapter.getLoggedFoodItemAt(viewHolder.getAdapterPosition());
+				String foodName = toDelete.getFoodItem().getName();
 				viewModel.detach(toDelete);
+				setProgress(viewModel.getGoal(), viewModel.getProgress());
 				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.food_item_detached) + foodName, Toast.LENGTH_SHORT).show();
 			}
 		}).attachToRecyclerView(foodItemsView);

@@ -36,7 +36,7 @@ public interface DayLogDao
 	void deleteAll();
 
 	@Transaction
-	@Query("SELECT DayLogFoodItemCrossRef.loggedWeight, FoodItem.* FROM DayLogFoodItemCrossRef INNER JOIN FoodItem ON DayLogFoodItemCrossRef.foodItemId = FoodItem.foodItemId WHERE DayLogFoodItemCrossRef.dayLogDate = :dayLogDate")
+	@Query("SELECT DayLogFoodItemCrossRef.id, DayLogFoodItemCrossRef.loggedWeight, FoodItem.* FROM DayLogFoodItemCrossRef INNER JOIN FoodItem ON DayLogFoodItemCrossRef.foodItemId = FoodItem.foodItemId WHERE DayLogFoodItemCrossRef.dayLogDate = :dayLogDate")
 	LiveData<List<LoggedFoodItem>> getLoggedFoodItems(LocalDate dayLogDate);
 
 	@Transaction

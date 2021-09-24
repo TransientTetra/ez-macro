@@ -8,14 +8,19 @@ import com.transienttetra.ezmacro.entities.Nutrition;
 
 public class LoggedFoodItem
 {
+	private int id;
 	private float loggedWeight;
 	@Embedded
 	private FoodItem foodItem;
 
-	public LoggedFoodItem(float loggedWeight, FoodItem foodItem)
+	public int getId()
 	{
-		this.loggedWeight = loggedWeight;
-		this.foodItem = foodItem;
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
 	}
 
 	public FoodItem getFoodItem()
