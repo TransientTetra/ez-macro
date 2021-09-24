@@ -26,7 +26,7 @@ public class LoggedFoodItemAdapter extends ListAdapter<LoggedFoodItem, LoggedFoo
 		@Override
 		public boolean areItemsTheSame(@NonNull LoggedFoodItem oldItem, @NonNull LoggedFoodItem newItem)
 		{
-			return oldItem.getFoodItem().equals(newItem.getFoodItem()) && oldItem.getLoggedWeight() == newItem.getLoggedWeight();
+			return oldItem.getId() == newItem.getId();
 		}
 
 		@Override

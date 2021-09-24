@@ -75,14 +75,11 @@ public class HomeFragmentViewModel extends AndroidViewModel
 		repository.insert(dayLog);
 	}
 
-	public void detach(DayLog daylog, FoodItem foodItem)
+	public void detach(LoggedFoodItem foodItem)
 	{
-		repository.delete(new DayLogFoodItemCrossRef(daylog.getDayLogDate(), foodItem.getFoodItemId()));
-	}
-
-	public void detach(FoodItem foodItem)
-	{
-		detach(new DayLog(currentDate), foodItem);
+		DayLogFoodItemCrossRef toDelete = new DayLogFoodItemCrossRef(LocalDate.now(), 0);
+		toDelete.setId(foodItem.getId());
+		repository.delete(toDelete);
 	}
 
 	public Nutrition getGoal()
